@@ -38,26 +38,26 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveClient(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            throw new Exception("all fields are required");
+            return new CommonResponse("Fail", "Missing fields", "Missing firstName, lastName, phoneNumber and address fields").toJson();
         }
         Client newClient = new Client();
         if (map.get("firstName") == null) {
-            throw new Exception("first name is required");
+            return new CommonResponse("Fail", "Missing field firstName", "firstName is required").toJson();
         } else {
             newClient.setFirstName(map.get("firstName"));
         }
         if (map.get("lastName") == null) {
-            throw new Exception("last name is required");
+            return new CommonResponse("Fail", "Missing field lastName", "lastName is required").toJson();
         } else {
             newClient.setLastName(map.get("lastName"));
         }
         if (map.get("phoneNumber") == null) {
-            throw new Exception("phone number is required");
+            return new CommonResponse("Fail", "Missing field phoneNumber", "phoneNumber is required").toJson();
         } else {
             newClient.setPhoneNumber(map.get("phoneNumber"));
         }
         if (map.get("address") == null) {
-            throw new Exception("address is required");
+            return new CommonResponse("Fail", "Missing field address", "address is required").toJson();
         } else {
             newClient.setAddress(map.get("address"));
         }
@@ -91,7 +91,7 @@ public class ApiController {
             ClientResponse response = new MultipleClientResponse("Success", result.size() + " Clients found", result);
             return response.toJson();
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'name", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson();
         }
 
     }

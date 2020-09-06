@@ -48,7 +48,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveProduct(@RequestParam Map<String, String> map, MultipartFile image) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing name, category, sex, price and ageCatergoyfields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing name, category, sex, price and ageCategory fields").toJson();
         }
         Product newProduct = new Product();
         if (map.get("name") == null) {
@@ -144,9 +144,9 @@ public class ApiController {
             return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
         }
         if (paramMap.get("id") != null) {
-            Product client = productRepository.findProductById(UUID.fromString(paramMap.get("id")));
-            if (client != null) {
-                productRepository.delete(client);
+            Product product = productRepository.findProductById(UUID.fromString(paramMap.get("id")));
+            if (product != null) {
+                productRepository.delete(product);
                 return new CommonResponse("Success", "Deleted successfully", "").toJson();
             }
             return new CommonResponse("Fail", "No Product", "Product with provided ID does not exist").toJson();

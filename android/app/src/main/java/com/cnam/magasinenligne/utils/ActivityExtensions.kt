@@ -13,11 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.cnam.magasinenligne.R
+import com.cnam.magasinenligne.fragments.landing.AccountFragment
+import com.cnam.magasinenligne.fragments.landing.HomeFragment
+import com.cnam.magasinenligne.fragments.landing.ShopFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yalantis.ucrop.UCrop
 
 fun FragmentManager.makeTransaction(
-    container: Int,
     fragment: Fragment,
     tag: String,
     animationEnter: Int? = null,
@@ -28,7 +31,7 @@ fun FragmentManager.makeTransaction(
         .setCustomAnimations(animationEnter, 0, 0, animationExit) else this.beginTransaction()
 
     transaction.replace(
-        container,
+        R.id.fl_container,
         fragment,
         tag
     )
@@ -37,7 +40,6 @@ fun FragmentManager.makeTransaction(
 }
 
 fun FragmentManager.addTransaction(
-    container: Int,
     fragment: Fragment,
     tag: String,
     animationEnter: Int? = null,
@@ -47,7 +49,7 @@ fun FragmentManager.addTransaction(
     val transaction = if (animationExit != null && animationEnter != null) this.beginTransaction()
         .setCustomAnimations(animationEnter, 0, 0, animationExit) else this.beginTransaction()
     transaction.add(
-        container,
+        R.id.fl_container,
         fragment,
         tag
     )
@@ -117,4 +119,16 @@ fun Activity.startCrop(sourceUri: Uri, destinationUri: Uri) {
         .withAspectRatio(1f, 1f)
         .withOptions(options)
         .start(this)
+}
+
+fun FragmentManager.getActiveFragmentTag(): String {
+    val fragment = this.findFragmentById(R.id.fl_container)
+    return if (fragment != null) {
+        when (fragment) {
+            is HomeFragment -> "home"
+            is ShopFragment -> "shop"
+            is AccountFragment -> "account"
+            else -> ""
+        }
+    } else ""
 }

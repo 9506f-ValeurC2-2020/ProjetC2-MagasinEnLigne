@@ -5,8 +5,8 @@ import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
-import com.cnam.magasinenligne.models.DeviceTimezone
 import com.cnam.magasinenligne.MyApplication
+import com.cnam.magasinenligne.models.DeviceTimezone
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import okhttp3.MediaType

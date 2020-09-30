@@ -9,18 +9,19 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/lottie_loader"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Home Shopping"
         android:gravity="center"
-        android:textSize="30sp"
         android:lines="1"
+        android:text="Home Shopping"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
         app:autoSizeMaxTextSize="30sp"
-        app:autoSizeStepGranularity="1sp"
         app:autoSizeMinTextSize="20sp"
+        app:autoSizeStepGranularity="1sp"
         app:autoSizeTextType="uniform"
-        android:textColor="@color/colorPrimary"/>
+        app:layout_constraintBottom_toTopOf="@id/lottie_loader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_loader"
         android:layout_width="wrap_content"
@@ -29,11 +30,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
         app:layout_constraintWidth_percent="0.9"
+        app:lottie_autoPlay="true"
         app:lottie_fileName="splash_loader_3.json"
         app:lottie_imageAssetsFolder="assets"
         app:lottie_loop="true" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

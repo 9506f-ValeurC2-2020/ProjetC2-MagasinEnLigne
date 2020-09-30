@@ -17,7 +17,6 @@ import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.fragments.landing.AccountFragment
 import com.cnam.magasinenligne.fragments.landing.HomeFragment
 import com.cnam.magasinenligne.fragments.landing.ShopFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yalantis.ucrop.UCrop
 
 fun FragmentManager.makeTransaction(
@@ -92,13 +91,11 @@ fun Activity.startCameraCapture(uri: Uri) {
 }
 
 fun Activity.createDialog(title: String, message: String): AlertDialog.Builder {
-    val builder = MaterialAlertDialogBuilder(this)
-    builder
-        .setTitle(title)
-        .setMessage(message)
-        .setCancelable(true)
-
-    return builder
+    return AlertDialog.Builder(this).also {
+        it.setTitle(title)
+        it.setMessage(message)
+        it.setCancelable(true)
+    }
 }
 
 fun Activity.hideKeyboard() {

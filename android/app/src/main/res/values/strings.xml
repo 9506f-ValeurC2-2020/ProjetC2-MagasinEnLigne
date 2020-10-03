@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MagasinEnLigne</string>
+    <string name="full_name">Full name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="address">Address</string>
+    <string name="welcome_client">Welcome Client</string>
+    <string name="welcome_admin">Welcome Admin</string>
+    <string name="register">Register</string>
+    <string name="welcome_merchant">Welcome Merchant</string>
+    <string name="admin_verification_message">Please provide the correct Pin to verify that you are the application admin</string>
 </resources>

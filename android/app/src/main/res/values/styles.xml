@@ -4,6 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">@font/all_round_gothic_w01_medium</item>
     </style>
 
     <style name="BottomNavigationTextAppearance">

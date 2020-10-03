@@ -25,7 +25,7 @@ class MerchantRegistrationFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_account, null)
+        return inflater.inflate(R.layout.fragment_merchant_registration, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

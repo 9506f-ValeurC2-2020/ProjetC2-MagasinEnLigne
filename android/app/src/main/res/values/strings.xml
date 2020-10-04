@@ -18,4 +18,7 @@
     <string name="password_digt_error">Password should contain at least one digit</string>
     <string name="password_special_character_error">Password should contain at least one special character</string>
     <string name="phone_not_valid_error">phone not valid</string>
+    <string name="my_account">My Account</string>
+    <string name="maps_api_key">AIzaSyBT8dnNZ5Y2DOMnz-oM_7nCDxtOBWL2Ul8</string>
+    <string name="get_position">Get Position</string>
 </resources>

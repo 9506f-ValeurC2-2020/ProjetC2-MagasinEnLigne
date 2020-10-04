@@ -22,9 +22,11 @@ class SplashActivity : AppCompatActivity() {
         if (isUserLoggedIn) {
             // user has logged in previously to the app.. going to landing activity
             startActivity(Intent(this, LandingActivity::class.java))
+            finish()
         } else {
             // user not logged in.. registration
             startActivity(Intent(this, RegistrationActivity::class.java))
+            finish()
         }
     }
 }

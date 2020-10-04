@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.cnam.magasinenligne.R
+import com.cnam.magasinenligne.activities.RegistrationActivity
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.utils.hide
 import com.cnam.magasinenligne.utils.isValidPhone
@@ -150,7 +151,7 @@ class MerchantRegistrationFragment : BaseFragment() {
         }
 
         // all checks are good.. sending request to api
-
+        (activity!! as RegistrationActivity).login("merchant")
     }
 
     private fun getErrorMessage(code: Int): String? {

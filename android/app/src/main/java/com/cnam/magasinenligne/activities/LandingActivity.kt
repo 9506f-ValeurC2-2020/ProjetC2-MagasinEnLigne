@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.cnam.magasinenligne.R
+import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.fragments.landing.AccountFragment
 import com.cnam.magasinenligne.fragments.landing.HomeFragment
 import com.cnam.magasinenligne.fragments.landing.ShopFragment
@@ -60,5 +61,9 @@ class LandingActivity : AppCompatActivity() {
     fun stopLoading() {
         loader.hide()
         cl_mask.lockView(false)
+    }
+
+    fun addOnBackStackListener(baseFragment: BaseFragment) {
+        supportFragmentManager.addOnBackStackChangedListener(baseFragment)
     }
 }

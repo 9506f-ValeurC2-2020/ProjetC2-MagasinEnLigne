@@ -7,8 +7,7 @@ import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.fragments.landing.AccountFragment
 import com.cnam.magasinenligne.fragments.landing.HomeFragment
 import com.cnam.magasinenligne.fragments.landing.ShopFragment
-import com.cnam.magasinenligne.utils.getActiveFragmentTag
-import com.cnam.magasinenligne.utils.makeTransaction
+import com.cnam.magasinenligne.utils.*
 import kotlinx.android.synthetic.main.activity_landing.*
 
 class LandingActivity : AppCompatActivity() {
@@ -51,5 +50,15 @@ class LandingActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    fun startLoading() {
+        loader.show()
+        cl_mask.lockView(true)
+    }
+
+    fun stopLoading() {
+        loader.hide()
+        cl_mask.lockView(false)
     }
 }

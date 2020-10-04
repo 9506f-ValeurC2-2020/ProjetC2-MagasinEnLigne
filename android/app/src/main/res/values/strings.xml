@@ -10,4 +10,12 @@
     <string name="register">Register</string>
     <string name="welcome_merchant">Welcome Merchant</string>
     <string name="admin_verification_message">Please provide the correct Pin to verify that you are the application admin</string>
+    <string name="required_field_error">required field</string>
+    <string name="passowrd_not_match_error">password does not match</string>
+    <string name="password_length_error">Password must be at least 8 characters</string>
+    <string name="password_upper_case_error">Password should contain at least one upper case letter</string>
+    <string name="password_lower_case_error">Password should contain at least one lower case letter</string>
+    <string name="password_digt_error">Password should contain at least one digit</string>
+    <string name="password_special_character_error">Password should contain at least one special character</string>
+    <string name="phone_not_valid_error">phone not valid</string>
 </resources>

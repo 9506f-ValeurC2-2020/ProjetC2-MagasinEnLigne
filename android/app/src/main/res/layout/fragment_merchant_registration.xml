@@ -51,6 +51,17 @@
         app:layout_constraintTop_toTopOf="@id/guideline_top"
         app:layout_constraintWidth_percent="0.8" />
 
+    <ImageView
+        android:id="@+id/iv_name_ok"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_name"
+        app:layout_constraintEnd_toEndOf="@id/et_name"
+        app:layout_constraintTop_toTopOf="@id/et_name"
+        app:srcCompat="@drawable/ic_check" />
+
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="0dp"
@@ -68,6 +79,17 @@
         app:layout_constraintTop_toBottomOf="@id/et_name"
         app:layout_constraintWidth_percent="0.8" />
 
+    <ImageView
+        android:id="@+id/iv_phone_ok"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_phone"
+        app:layout_constraintEnd_toEndOf="@id/et_phone"
+        app:layout_constraintTop_toTopOf="@id/et_phone"
+        app:srcCompat="@drawable/ic_check" />
+
     <EditText
         android:id="@+id/et_password"
         android:layout_width="0dp"
@@ -83,6 +105,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_phone"
         app:layout_constraintWidth_percent="0.8" />
+
+    <ImageView
+        android:id="@+id/iv_password_ok"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_password"
+        app:layout_constraintEnd_toEndOf="@id/et_password"
+        app:layout_constraintTop_toTopOf="@id/et_password"
+        app:srcCompat="@drawable/ic_check" />
 
     <EditText
         android:id="@+id/et_confirm_password"
@@ -100,6 +133,16 @@
         app:layout_constraintTop_toBottomOf="@id/et_password"
         app:layout_constraintWidth_percent="0.8" />
 
+    <ImageView
+        android:id="@+id/iv_confirm_password_ok"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_confirm_password"
+        app:layout_constraintEnd_toEndOf="@id/et_confirm_password"
+        app:layout_constraintTop_toTopOf="@id/et_confirm_password"
+        app:srcCompat="@drawable/ic_check" />
 
     <Button
         android:id="@+id/bt_register"

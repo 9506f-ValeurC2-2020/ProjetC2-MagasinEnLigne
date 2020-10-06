@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ApiController {
+
     @Autowired
     private VendeurRepository vendeurRepository;
 
@@ -37,28 +38,23 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveVendeur(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing firstName, lastName, phoneNumber and address fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing fullName, password, phoneNumber fields").toJson();
         }
         Vendeur newVendeur = new Vendeur();
-        if (map.get("firstName") == null) {
-            return new CommonResponse("Fail", "Missing field firstName", "firstName is required").toJson();
+        if (map.get("fullName") == null) {
+            return new CommonResponse("Fail", "Missing field fullName", "fullName is required").toJson();
         } else {
-            newVendeur.setFirstName(map.get("firstName"));
+            newVendeur.setFullName(map.get("fullName"));
         }
-        if (map.get("lastName") == null) {
-            return new CommonResponse("Fail", "Missing field lastName", "lastName is required").toJson();
+        if (map.get("password") == null) {
+            return new CommonResponse("Fail", "Missing field password", "password is required").toJson();
         } else {
-            newVendeur.setLastName(map.get("lastName"));
+            newVendeur.setPassword(map.get("password"));
         }
         if (map.get("phoneNumber") == null) {
             return new CommonResponse("Fail", "Missing field phoneNumber", "phoneNumber is required").toJson();
         } else {
             newVendeur.setPhoneNumber(map.get("phoneNumber"));
-        }
-        if (map.get("address") == null) {
-            return new CommonResponse("Fail", "Missing field address", "address is required").toJson();
-        } else {
-            newVendeur.setAddress(map.get("address"));
         }
         vendeurRepository.save(newVendeur);
         VendeurResponse response = new SingleVendeurResponse("Success", "Vendeur created successfully", newVendeur);
@@ -84,10 +80,10 @@ public class ApiController {
             String name = paramMap.get("name");
             List<Vendeur> all = vendeurRepository.findAll();
             List<Vendeur> result = new ArrayList<>();
-            all.stream().filter(c -> (c.getFirstName().startsWith(name))).forEachOrdered(c -> {
+            all.stream().filter(c -> (c.getFullName().startsWith(name))).forEachOrdered(c -> {
                 result.add(c);
             });
-            VendeurResponse response = new MultipleVendeurResponse("Success", result.size() + " Venderus found", result);
+            VendeurResponse response = new MultipleVendeurResponse("Success", result.size() + " Vendeurs found", result);
             return response.toJson();
         } else {
             return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson();
@@ -126,17 +122,14 @@ public class ApiController {
                 if (oldVendeur == null) {
                     return new CommonResponse("Fail", "No such vendeur", "Vendeur with provided ID does not exist").toJson();
                 }
-                if (paramMap.get("firstName") != null) {
-                    oldVendeur.setFirstName(paramMap.get("firstName"));
+                if (paramMap.get("fullName") != null) {
+                    oldVendeur.setFullName(paramMap.get("fullName"));
                 }
-                if (paramMap.get("lastName") != null) {
-                    oldVendeur.setLastName(paramMap.get("lastName"));
+                if (paramMap.get("password") != null) {
+                    oldVendeur.setPassword(paramMap.get("password"));
                 }
                 if (paramMap.get("phoneNumber") != null) {
                     oldVendeur.setPhoneNumber(paramMap.get("phoneNumber"));
-                }
-                if (paramMap.get("address") != null) {
-                    oldVendeur.setAddress(paramMap.get("address"));
                 }
                 vendeurRepository.save(oldVendeur);
                 return new SingleVendeurResponse("Success", "Updated successfully", oldVendeur).toJson();
@@ -146,7 +139,7 @@ public class ApiController {
             }
 
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing id, firstName, lastName, phoneNumber and address fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing id, fullName, password, phoneNumber fields").toJson();
         }
     }
 }

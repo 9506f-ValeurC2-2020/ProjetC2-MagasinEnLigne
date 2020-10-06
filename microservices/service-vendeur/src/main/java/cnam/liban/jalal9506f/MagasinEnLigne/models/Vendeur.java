@@ -16,32 +16,28 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document
 public class Vendeur {
+
     @Id
     @Field("id")
     private UUID id;
-    @Field("firstName")
-    private String firstName;
-    @Field("lastName")
-    private String lastName;
+    @Field("fullName")
+    private String fullName;
+    @Field("password")
+    private String password;
     @Field("phoneNumber")
     private String phoneNumber;
-    @Field("address")
-    private String address;
 
-    
-    public Vendeur(){
-    this.id = UUID.randomUUID();
+    public Vendeur() {
+        this.id = UUID.randomUUID();
     }
 
-    public Vendeur(UUID id, String firstName, String lastName, String phoneNumber, String address) {
+    public Vendeur(UUID id, String fullName, String password, String phoneNumber) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = fullName;
+        this.password = password;
         this.phoneNumber = phoneNumber;
-        this.address = address;
     }
-    
-    
+
     public UUID getId() {
         return id;
     }
@@ -50,20 +46,20 @@ public class Vendeur {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {
@@ -73,14 +69,4 @@ public class Vendeur {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    
-    
 }

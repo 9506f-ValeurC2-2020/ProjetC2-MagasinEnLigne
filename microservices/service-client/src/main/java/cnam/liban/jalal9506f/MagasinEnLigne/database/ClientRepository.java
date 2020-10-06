@@ -23,7 +23,7 @@ public interface ClientRepository extends MongoRepository<Client, String> {
 
         //public List<Client> getAllClients();
 
-        @Query("{'firstName':?0}")
+        @Query("{'fullName':?0}")
         public List<Client> findClientByFirstName(String name);
     
         @Query("{'id':?0}")

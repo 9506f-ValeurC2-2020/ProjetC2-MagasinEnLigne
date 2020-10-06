@@ -38,18 +38,18 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveClient(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing firstName, lastName, phoneNumber and address fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing fullName, password, phoneNumber and address fields").toJson();
         }
         Client newClient = new Client();
-        if (map.get("firstName") == null) {
-            return new CommonResponse("Fail", "Missing field firstName", "firstName is required").toJson();
+        if (map.get("fullName") == null) {
+            return new CommonResponse("Fail", "Missing field fullName", "fullName is required").toJson();
         } else {
-            newClient.setFirstName(map.get("firstName"));
+            newClient.setFullName(map.get("fullName"));
         }
-        if (map.get("lastName") == null) {
-            return new CommonResponse("Fail", "Missing field lastName", "lastName is required").toJson();
+        if (map.get("password") == null) {
+            return new CommonResponse("Fail", "Missing field password", "password is required").toJson();
         } else {
-            newClient.setLastName(map.get("lastName"));
+            newClient.setPassword(map.get("password"));
         }
         if (map.get("phoneNumber") == null) {
             return new CommonResponse("Fail", "Missing field phoneNumber", "phoneNumber is required").toJson();
@@ -85,7 +85,7 @@ public class ApiController {
             String name = paramMap.get("name");
             List<Client> all = clientRepository.findAll();
             List<Client> result = new ArrayList<>();
-            all.stream().filter(c -> (c.getFirstName().startsWith(name))).forEachOrdered(c -> {
+            all.stream().filter(c -> (c.getFullName().startsWith(name))).forEachOrdered(c -> {
                 result.add(c);
             });
             ClientResponse response = new MultipleClientResponse("Success", result.size() + " Clients found", result);
@@ -127,11 +127,11 @@ public class ApiController {
                 if (oldClient == null) {
                     return new CommonResponse("Fail", "No such client", "Client with provided ID does not exist").toJson();
                 }
-                if (paramMap.get("firstName") != null) {
-                    oldClient.setFirstName(paramMap.get("firstName"));
+                if (paramMap.get("fullName") != null) {
+                    oldClient.setFullName(paramMap.get("fullName"));
                 }
-                if (paramMap.get("lastName") != null) {
-                    oldClient.setLastName(paramMap.get("lastName"));
+                if (paramMap.get("password") != null) {
+                    oldClient.setPassword(paramMap.get("password"));
                 }
                 if (paramMap.get("phoneNumber") != null) {
                     oldClient.setPhoneNumber(paramMap.get("phoneNumber"));
@@ -147,7 +147,7 @@ public class ApiController {
             }
 
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing id, firstName, lastName, phoneNumber and address fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing id, fullName, password, phoneNumber and address fields").toJson();
         }
     }
 

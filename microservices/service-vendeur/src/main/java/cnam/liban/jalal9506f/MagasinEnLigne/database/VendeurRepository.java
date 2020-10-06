@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Repository
 public interface VendeurRepository extends MongoRepository<Vendeur,String> {
-    @Query("{'firstName':?0}")
+    @Query("{'fullName':?0}")
         public List<Vendeur> findVendeurByFirstName(String name);
     
         @Query("{'id':?0}")

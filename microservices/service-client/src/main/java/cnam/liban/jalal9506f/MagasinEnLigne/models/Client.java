@@ -20,10 +20,10 @@ public class Client {
     @Id
     @Field("id")
     private UUID id;
-    @Field("firstName")
-    private String firstName;
-    @Field("lastName")
-    private String lastName;
+    @Field("fullName")
+    private String fullName;
+    @Field("password")
+    private String password;
     @Field("phoneNumber")
     private String phoneNumber;
     @Field("address")
@@ -33,10 +33,10 @@ public class Client {
         this.id = UUID.randomUUID();
     }
 
-    public Client(UUID id, String firstName, String lastName, String phoneNumber, String address) {
+    public Client(UUID id, String fullName, String password, String phoneNumber, String address) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = fullName;
+        this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
     }
@@ -49,12 +49,12 @@ public class Client {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getPassword() {
+        return password;
     }
 
     public String getPhoneNumber() {
@@ -65,12 +65,12 @@ public class Client {
         return address;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setPhoneNumber(String phoneNumber) {

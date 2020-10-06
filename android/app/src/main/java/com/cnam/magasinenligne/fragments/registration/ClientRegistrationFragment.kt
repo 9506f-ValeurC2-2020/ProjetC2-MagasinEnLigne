@@ -102,7 +102,7 @@ class ClientRegistrationFragment : BaseFragment() {
                     iv_confirm_password_ok.hide()
                 } else {
                     if (confirmedPassword != et_password.text.toString()) {
-                        et_confirm_password.error = getString(R.string.passowrd_not_match_error)
+                        et_confirm_password.error = getString(R.string.password_not_match_error)
                         iv_confirm_password_ok.hide()
                     } else {
                         iv_confirm_password_ok.show()
@@ -171,7 +171,7 @@ class ClientRegistrationFragment : BaseFragment() {
             return
         }
         if (password != confirmPassword) {
-            et_confirm_password.error = getString(R.string.passowrd_not_match_error)
+            et_confirm_password.error = getString(R.string.password_not_match_error)
             return
         }
 
@@ -187,7 +187,7 @@ class ClientRegistrationFragment : BaseFragment() {
             -1 -> getString(R.string.password_length_error)
             -2 -> getString(R.string.password_upper_case_error)
             -3 -> getString(R.string.password_lower_case_error)
-            -4 -> getString(R.string.password_digt_error)
+            -4 -> getString(R.string.password_digit_error)
             else -> getString(R.string.password_special_character_error)
         }
 
@@ -219,11 +219,11 @@ class ClientRegistrationFragment : BaseFragment() {
             )
         } else {
             myActivity.createDialog(
-                "Alert",
-                "Location permission is necessary for better service"
+                getString(R.string.alert),
+                getString(R.string.location_is_necessary)
             )
                 .setCancelable(false)
-                .setPositiveButton("Ok") { dialog, _ ->
+                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                     mapClicked = false
                     dialog.dismiss()
                 }

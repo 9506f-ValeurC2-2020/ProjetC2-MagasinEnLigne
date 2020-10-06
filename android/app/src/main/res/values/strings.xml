@@ -11,14 +11,58 @@
     <string name="welcome_merchant">Welcome Merchant</string>
     <string name="admin_verification_message">Please provide the correct Pin to verify that you are the application admin</string>
     <string name="required_field_error">required field</string>
-    <string name="passowrd_not_match_error">password does not match</string>
+    <string name="password_not_match_error">password does not match</string>
     <string name="password_length_error">Password must be at least 8 characters</string>
     <string name="password_upper_case_error">Password should contain at least one upper case letter</string>
     <string name="password_lower_case_error">Password should contain at least one lower case letter</string>
-    <string name="password_digt_error">Password should contain at least one digit</string>
+    <string name="password_digit_error">Password should contain at least one digit</string>
     <string name="password_special_character_error">Password should contain at least one special character</string>
     <string name="phone_not_valid_error">phone not valid</string>
     <string name="my_account">My Account</string>
     <string name="maps_api_key">AIzaSyBT8dnNZ5Y2DOMnz-oM_7nCDxtOBWL2Ul8</string>
     <string name="get_position">Get Position</string>
+    <string name="change_password">change password</string>
+    <string name="change_phone">change phone</string>
+    <string name="change_email">change email</string>
+    <string name="logout">logout</string>
+    <string name="error">Error</string>
+    <string name="incorrect_pin">The pin you entered is incorrect, please make sure you insert the correct pin to login as an admin</string>
+    <string name="ok">Ok</string>
+    <string name="admin_code">30184</string>
+    <string name="alert">Alert</string>
+    <string name="location_is_necessary">Location permission is necessary for better service</string>
+    <string name="no_items_found">No items found</string>
+    <string name="search">Search…</string>
+    <string name="price">price</string>
+    <string name="sex">sex</string>
+    <string name="age">age</string>
+    <string name="category">category</string>
+    <string name="filters">Filters</string>
+
+    <array name="categories">
+        <item>all</item>
+        <item>clothing</item>
+        <item>electronics</item>
+        <item>makeup</item>
+        <item>home appliances</item>
+    </array>
+    <array name="ages">
+        <item>all</item>
+        <item>0-3</item>
+        <item>4-9</item>
+        <item>10-15</item>
+        <item>16-24</item>
+        <item>25-30</item>
+        <item>31-99</item>
+    </array>
+    <array name="sexes">
+        <item>all</item>
+        <item>female</item>
+        <item>male</item>
+    </array>
+    <array name="prices">
+        <item>all</item>
+        <item>lowest first</item>
+        <item>highest first</item>
+    </array>
 </resources>

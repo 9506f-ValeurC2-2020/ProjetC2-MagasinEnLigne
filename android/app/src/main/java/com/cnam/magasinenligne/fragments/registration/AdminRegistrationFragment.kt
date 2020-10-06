@@ -50,14 +50,14 @@ class AdminRegistrationFragment : BaseFragment() {
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().length == 5) {
                     val code = s.toString()
-                    if (code == "30184") { // this is an admin
+                    if (code == getString(R.string.admin_code)) { // this is an admin
                         (activity!! as RegistrationActivity).login("admin")
                     } else {
                         activity!!.createDialog(
-                            "Error",
-                            "The pin you entered is incorrect, please make sure you insert the correct pin to login as an admin"
+                            getString(R.string.error),
+                            getString(R.string.incorrect_pin)
                         )
-                            .setPositiveButton("Ok") { dialog, _ ->
+                            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                                 dialog.dismiss()
                             }
                             .show()

@@ -4,4 +4,6 @@
     <color name="colorAccent">#5c7647</color>
     <color name="colorWhite">#fff</color>
     <color name="colorEditTextRegistration">#805C7647</color>
+    <color name="colorBlue">#2196F3</color>
+    <color name="colorGrayTransparent">#80AAA6A6</color>
 </resources>

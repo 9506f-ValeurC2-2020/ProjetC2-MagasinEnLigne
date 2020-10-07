@@ -38,6 +38,7 @@
     <string name="age">age</string>
     <string name="category">category</string>
     <string name="filters">Filters</string>
+    <string name="get">get</string>
 
     <array name="categories">
         <item>all</item>
@@ -62,7 +63,7 @@
     </array>
     <array name="prices">
         <item>all</item>
-        <item>lowest first</item>
-        <item>highest first</item>
+        <item>lowest</item>
+        <item>highest</item>
     </array>
 </resources>

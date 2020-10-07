@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:text="@string/category"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorBlue"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/sp_filter_category"
             app:layout_constraintStart_toStartOf="@id/sp_filter_category" />
@@ -68,10 +68,10 @@
             android:entries="@array/categories"
             android:theme="@style/SpinnerTheme"
             app:layout_constraintBottom_toTopOf="@id/et_search"
-            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_filters"
-            app:layout_constraintWidth_percent="0.45" />
+            app:layout_constraintWidth_percent="0.35" />
 
         <TextView
             android:id="@+id/tv_dummy_age"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:text="@string/age"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorBlue"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/sp_filter_age"
             app:layout_constraintStart_toStartOf="@id/sp_filter_age" />
@@ -94,17 +94,17 @@
             android:theme="@style/SpinnerTheme"
             app:layout_constraintBottom_toTopOf="@id/et_search"
             app:layout_constraintEnd_toStartOf="@id/sp_filter_sex"
-            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toEndOf="@id/sp_filter_category"
             app:layout_constraintTop_toBottomOf="@id/tv_filters"
-            app:layout_constraintWidth_percent="0.15" />
+            app:layout_constraintWidth_percent="0.2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:text="@string/sex"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorBlue"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/sp_filter_sex"
             app:layout_constraintStart_toStartOf="@id/sp_filter_sex" />
@@ -119,17 +119,17 @@
             android:theme="@style/SpinnerTheme"
             app:layout_constraintBottom_toTopOf="@id/et_search"
             app:layout_constraintEnd_toStartOf="@id/sp_filter_price"
-            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toEndOf="@id/sp_filter_age"
             app:layout_constraintTop_toBottomOf="@id/tv_filters"
-            app:layout_constraintWidth_percent="0.15" />
+            app:layout_constraintWidth_percent="0.2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:text="@string/price"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorBlue"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/sp_filter_price"
             app:layout_constraintStart_toStartOf="@id/sp_filter_price" />
@@ -144,10 +144,10 @@
             android:theme="@style/SpinnerTheme"
             app:layout_constraintBottom_toTopOf="@id/et_search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toEndOf="@id/sp_filter_sex"
             app:layout_constraintTop_toBottomOf="@id/tv_filters"
-            app:layout_constraintWidth_percent="0.15" />
+            app:layout_constraintWidth_percent="0.2" />
 
         <EditText
             android:id="@+id/et_search"
@@ -162,12 +162,12 @@
             android:textColorHint="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_items"
+        android:id="@+id/rv_products"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
@@ -184,8 +184,8 @@
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/rv_items"
-        app:layout_constraintEnd_toEndOf="@id/rv_items"
-        app:layout_constraintStart_toStartOf="@id/rv_items"
-        app:layout_constraintTop_toTopOf="@id/rv_items" />
+        app:layout_constraintBottom_toBottomOf="@id/rv_products"
+        app:layout_constraintEnd_toEndOf="@id/rv_products"
+        app:layout_constraintStart_toStartOf="@id/rv_products"
+        app:layout_constraintTop_toTopOf="@id/rv_products" />
 </androidx.constraintlayout.widget.ConstraintLayout>

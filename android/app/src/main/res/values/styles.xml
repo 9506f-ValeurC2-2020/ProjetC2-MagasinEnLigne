@@ -24,11 +24,11 @@
     <style name="SpinnerTheme">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeStepGranularity">1sp</item>
         <item name="autoSizeMinTextSize">10sp</item>
-        <item name="autoSizeMaxTextSize">14sp</item>
+        <item name="autoSizeMaxTextSize">12sp</item>
         <item name="android:lines">1</item>
         <item name="android:spinnerMode">dropdown</item>
     </style>

@@ -26,6 +26,8 @@ public class Vendeur {
     private String password;
     @Field("phoneNumber")
     private String phoneNumber;
+    @Field("email")
+    private String email;
 
     public Vendeur() {
         this.id = UUID.randomUUID();
@@ -68,5 +70,13 @@ public class Vendeur {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

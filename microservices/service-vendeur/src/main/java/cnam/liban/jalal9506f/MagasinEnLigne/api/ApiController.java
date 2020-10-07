@@ -131,6 +131,9 @@ public class ApiController {
                 if (paramMap.get("phoneNumber") != null) {
                     oldVendeur.setPhoneNumber(paramMap.get("phoneNumber"));
                 }
+                if (paramMap.get("email") != null) {
+                    oldVendeur.setEmail(paramMap.get("email"));
+                }
                 vendeurRepository.save(oldVendeur);
                 return new SingleVendeurResponse("Success", "Updated successfully", oldVendeur).toJson();
 

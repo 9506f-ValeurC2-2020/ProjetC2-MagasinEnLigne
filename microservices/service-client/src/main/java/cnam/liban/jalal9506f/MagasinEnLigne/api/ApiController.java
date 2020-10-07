@@ -136,6 +136,9 @@ public class ApiController {
                 if (paramMap.get("phoneNumber") != null) {
                     oldClient.setPhoneNumber(paramMap.get("phoneNumber"));
                 }
+                if (paramMap.get("email") != null) {
+                    oldClient.setEmail(paramMap.get("email"));
+                }
                 if (paramMap.get("address") != null) {
                     oldClient.setAddress(paramMap.get("address"));
                 }

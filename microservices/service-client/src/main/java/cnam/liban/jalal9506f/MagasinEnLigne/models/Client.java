@@ -26,6 +26,8 @@ public class Client {
     private String password;
     @Field("phoneNumber")
     private String phoneNumber;
+    @Field("email")
+    private String email;
     @Field("address")
     private String address;
 
@@ -33,11 +35,12 @@ public class Client {
         this.id = UUID.randomUUID();
     }
 
-    public Client(UUID id, String fullName, String password, String phoneNumber, String address) {
+    public Client(UUID id, String fullName, String password, String phoneNumber, String email, String address) {
         this.id = id;
         this.fullName = fullName;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.email = email;
         this.address = address;
     }
 
@@ -61,6 +64,10 @@ public class Client {
         return phoneNumber;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -75,6 +82,10 @@ public class Client {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setAddress(String address) {

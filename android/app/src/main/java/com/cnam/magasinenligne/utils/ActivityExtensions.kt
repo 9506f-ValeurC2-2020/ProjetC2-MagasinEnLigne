@@ -61,12 +61,21 @@ fun verifyPermissions(activity: Activity, request: Int, permissions: Array<Strin
     for (element in permissions) {
         val permission = ActivityCompat.checkSelfPermission(activity, element)
         if (permission != PackageManager.PERMISSION_GRANTED) {
-
             granted = false
-
         }
     }
     if (!granted) ActivityCompat.requestPermissions(activity, permissions, request)
+    return granted
+}
+
+fun checkPermissions(activity: Activity, request: Int, permissions: Array<String>): Boolean {
+    var granted = true
+    for (element in permissions) {
+        val permission = ActivityCompat.checkSelfPermission(activity, element)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            granted = false
+        }
+    }
     return granted
 }
 

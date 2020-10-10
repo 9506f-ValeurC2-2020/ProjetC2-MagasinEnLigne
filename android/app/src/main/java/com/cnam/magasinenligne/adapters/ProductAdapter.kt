@@ -35,8 +35,8 @@ class ProductAdapter(
     inner class ProductViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bindProduct(product: Product){
-            with(product){
+        fun bindProduct(product: Product) {
+            with(product) {
                 itemView.card_shop_item
             }
         }

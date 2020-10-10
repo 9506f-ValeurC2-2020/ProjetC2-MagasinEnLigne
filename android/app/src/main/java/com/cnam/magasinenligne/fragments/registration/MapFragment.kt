@@ -1,6 +1,7 @@
 package com.cnam.magasinenligne.fragments.registration
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Criteria
@@ -16,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.RegistrationActivity
 import com.cnam.magasinenligne.fragments.BaseFragment
+import com.cnam.magasinenligne.utils.logDebug
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -32,6 +34,7 @@ class MapFragment : BaseFragment() {
     private var longitude = 35.5018
     private lateinit var myMarker: Marker
     private var locationClicked = false
+    private lateinit var myActivity: RegistrationActivity
 
     /**
      * OnBackPressedCallback
@@ -39,7 +42,7 @@ class MapFragment : BaseFragment() {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                activity!!.finish()
+                myActivity.supportFragmentManager.popBackStack()
             }
         }
 
@@ -48,6 +51,7 @@ class MapFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        myActivity = activity!! as RegistrationActivity
         return inflater.inflate(R.layout.fragment_map, null)
     }
 
@@ -68,10 +72,10 @@ class MapFragment : BaseFragment() {
         mv_location?.getMapAsync { map ->
             googleMap = map
             if (ActivityCompat.checkSelfPermission(
-                    activity!!,
+                    myActivity,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    activity!!,
+                    myActivity,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
@@ -84,19 +88,44 @@ class MapFragment : BaseFragment() {
                 // for ActivityCompat#requestPermissions for more details.
             }
             googleMap.isMyLocationEnabled = true
-            googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            logDebug("Entering async")
+
             googleMap.setOnMapClickListener {
                 myMarker.remove()
                 myLocation = LatLng(it.latitude, it.longitude)
                 myMarker = googleMap.addMarker(
                     MarkerOptions()
                         .position(myLocation)
-                        .title("My current location")
+                        .title(getString(R.string.my_current_location))
                         .icon(
                             BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
                         )
                 )
+            }
+            googleMap.setOnMyLocationButtonClickListener {
+                try {
+                    myLocation = LatLng(
+                        googleMap.myLocation.latitude,
+                        googleMap.myLocation.longitude
+                    )
+                    myMarker.remove()
+                    myMarker = googleMap.addMarker(
+                        MarkerOptions()
+                            .position(myLocation)
+                            .title(getString(R.string.my_current_location))
+                            .icon(
+                                BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
+                            )
+                    )
+                    val cameraPosition =
+                        CameraPosition.Builder().target(myLocation).zoom(11f).build()
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                } catch (e: Exception) {
+                    logDebug("Exception error is => ${e.message}")
+                }
+                false
             }
             getMyLocation()
         }
@@ -108,8 +137,8 @@ class MapFragment : BaseFragment() {
         bt_get_location.setOnClickListener {
             if (!locationClicked) {
                 locationClicked = true
-                (activity!! as RegistrationActivity).location = myLocation
-                activity!!.supportFragmentManager.popBackStack()
+                myActivity.location = myLocation
+                myActivity.supportFragmentManager.popBackStack()
             }
         }
     }
@@ -165,6 +194,10 @@ class MapFragment : BaseFragment() {
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             myLocation = LatLng(latitude, longitude)
+            //getLastLocation()
+            if (myActivity.isLocationInitialized()) {
+                myLocation = myActivity.location
+            }
             // For zooming automatically to the location of the marker
             try {
                 val cameraPosition = CameraPosition.Builder().target(myLocation).zoom(11f).build()
@@ -175,7 +208,7 @@ class MapFragment : BaseFragment() {
                 myMarker = googleMap.addMarker(
                     MarkerOptions()
                         .position(myLocation)
-                        .title("My current location")
+                        .title(getString(R.string.my_current_location))
                         .icon(
                             BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
@@ -190,22 +223,43 @@ class MapFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        val criteria = Criteria()
+        criteria.accuracy = Criteria.ACCURACY_FINE
+        criteria.powerRequirement = Criteria.POWER_LOW
+        criteria.isAltitudeRequired = false
+        criteria.isBearingRequired = false
+        val provider = locationManager.getBestProvider(criteria, true) ?: return
+
+        val lastKnownLocation = locationManager.getLastKnownLocation(provider)
+        if (lastKnownLocation != null) {
+            myLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
+            logDebug("My location is => $myLocation")
+        }
+    }
+
     private fun registerLocationUpdates() {
         val criteria = Criteria()
         criteria.accuracy = Criteria.ACCURACY_FINE
         criteria.powerRequirement = Criteria.POWER_LOW
         criteria.isAltitudeRequired = false
         criteria.isBearingRequired = false
-
         val provider = locationManager.getBestProvider(criteria, true) ?: return
+
+        val lastKnownLocation = locationManager.getLastKnownLocation(provider)
+        if (lastKnownLocation != null) {
+            myLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
+            logDebug("My location is => $myLocation")
+        }
 
         // Cant get a hold of provider
 
         if (ActivityCompat.checkSelfPermission(
-                activity!!.applicationContext,
+                myActivity.applicationContext,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                activity!!.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION
+                myActivity.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -232,10 +286,10 @@ class MapFragment : BaseFragment() {
 
 
             if (ActivityCompat.checkSelfPermission(
-                    activity!!.applicationContext,
+                    myActivity.applicationContext,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    activity!!.applicationContext,
+                    myActivity.applicationContext,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
@@ -249,6 +303,9 @@ class MapFragment : BaseFragment() {
 
             myLocation = LatLng(latitude, longitude)
 
+            if (myActivity.isLocationInitialized()) {
+                myLocation = myActivity.location
+            }
 
             // For zooming automatically to the location of the marker
             try {
@@ -261,7 +318,7 @@ class MapFragment : BaseFragment() {
                 myMarker = googleMap.addMarker(
                     MarkerOptions()
                         .position(myLocation)
-                        .title("My current location")
+                        .title(getString(R.string.my_current_location))
                         .icon(
                             BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)

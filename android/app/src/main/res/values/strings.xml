@@ -39,6 +39,10 @@
     <string name="category">category</string>
     <string name="filters">Filters</string>
     <string name="get">get</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_needed">Permission Needed</string>
+    <string name="permission_importance_message">Dear customer, for better experience and service we need to get your exact location</string>
+    <string name="my_current_location">My current location</string>
 
     <array name="categories">
         <item>all</item>

@@ -113,10 +113,25 @@ class ClientRegistrationFragment : BaseFragment() {
         cl_address.setOnClickListener {
             logDebug("clicking address")
             if (!mapClicked) {
-                mapClicked = true
-                val granted = verifyPermissions(myActivity, locationRequest, locationPermission)
+                val granted = checkPermissions(activity!!, locationRequest, locationPermission)
                 if (granted) {
+
                     handlePermissionResult(1)
+                } else {
+                    myActivity.createDialog(
+                        getString(R.string.permission_needed),
+                        getString(R.string.permission_importance_message)
+                    ).setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                        mapClicked = true
+                        requestPermissions(locationPermission, locationRequest)
+                        dialog.dismiss()
+                    }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                        handlePermissionResult(0)
+                        dialog.dismiss()
+                    }
+                        .create()
+                        .show()
+
                 }
             }
 
@@ -132,6 +147,14 @@ class ClientRegistrationFragment : BaseFragment() {
                 val address = tv_address.text.toString()
                 register(name, phoneNumber, password, confirmPassword, address)
             }
+        }
+    }
+
+    private fun handlePermissionPopup() {
+        requestPermissions(locationPermission, locationRequest)
+        val granted = verifyPermissions(myActivity, locationRequest, locationPermission)
+        if (granted) {
+            handlePermissionResult(1)
         }
     }
 
@@ -198,9 +221,12 @@ class ClientRegistrationFragment : BaseFragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        logDebug("$requestCode is my request code")
         when (requestCode) {
             locationRequest -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    logDebug("granted")
                     handlePermissionResult(1)
                 } else {
                     handlePermissionResult(0)
@@ -248,7 +274,7 @@ class ClientRegistrationFragment : BaseFragment() {
             iv_address_ok.show()
         } else {
             iv_address_ok.hide()
-            tv_address.text = getString(R.string.address)
+            tv_address.hint = getString(R.string.address)
         }
     }
 }

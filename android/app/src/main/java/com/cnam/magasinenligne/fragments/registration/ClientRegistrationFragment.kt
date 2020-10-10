@@ -3,17 +3,22 @@ package com.cnam.magasinenligne.fragments.registration
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.RegistrationActivity
+import com.cnam.magasinenligne.api.*
+import com.cnam.magasinenligne.api.models.Client
+import com.cnam.magasinenligne.api.models.SingleClientResponse
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.utils.*
 import kotlinx.android.synthetic.main.fragment_client_registration.*
 
-class ClientRegistrationFragment : BaseFragment() {
+class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     private var mapClicked = false
     private var registerClicked = false
     private val locationRequest = 1000
@@ -77,6 +82,28 @@ class ClientRegistrationFragment : BaseFragment() {
                 }
             }
         }
+        et_password.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                iv_password_ok.hide()
+            }
+        })
+        et_confirm_password.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                iv_confirm_password_ok.hide()
+            }
+        })
         et_password.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val password = et_password.text.toString()
@@ -90,6 +117,13 @@ class ClientRegistrationFragment : BaseFragment() {
                         iv_password_ok.hide()
                     } else {
                         iv_password_ok.show()
+                        if (et_confirm_password.text.toString() == password) {
+                            et_confirm_password.error = null
+                            iv_confirm_password_ok.show()
+                        } else {
+                            et_confirm_password.error = getString(R.string.password_not_match_error)
+                            iv_confirm_password_ok.hide()
+                        }
                     }
                 }
             }
@@ -137,15 +171,30 @@ class ClientRegistrationFragment : BaseFragment() {
 
         }
 
+        cb_already_have_account.setOnCheckedChangeListener { _, isChecked ->
+            group_login.visibility = if (isChecked) {
+                bt_register.text = getString(R.string.login)
+                View.INVISIBLE
+            } else {
+                bt_register.text = getString(R.string.register)
+                View.VISIBLE
+            }
+
+        }
         bt_register.setOnClickListener {
             if (!registerClicked) {
-                registerClicked = true
-                val name = et_name.text.toString()
-                val phoneNumber = "+961${et_phone.text}"
-                val password = et_password.text.toString()
-                val confirmPassword = et_confirm_password.text.toString()
-                val address = tv_address.text.toString()
-                register(name, phoneNumber, password, confirmPassword, address)
+                if (cb_already_have_account.isChecked) {
+                    val phoneNumber = et_phone.text.toString()
+                    val password = et_password.text.toString()
+                    login(phoneNumber, password)
+                } else {
+                    val name = et_name.text.toString()
+                    val phoneNumber = et_phone.text.toString()
+                    val password = et_password.text.toString()
+                    val confirmPassword = et_confirm_password.text.toString()
+                    val address = tv_address.text.toString()
+                    register(name, phoneNumber, password, confirmPassword, address)
+                }
             }
         }
     }
@@ -168,41 +217,96 @@ class ClientRegistrationFragment : BaseFragment() {
         if (name.isEmpty()) {
             et_name.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_name.error = null
         }
         if (phoneNumber.isEmpty()) {
             et_phone.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_phone.error = null
         }
         if (password.isEmpty()) {
             et_password.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_password.error = null
         }
         if (confirmPassword.isEmpty()) {
             et_confirm_password.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_confirm_password.error = null
         }
         if (address.isEmpty()) {
             tv_address.error = getString(R.string.required_field_error)
             return
+        } else {
+            tv_address.error = null
         }
-        if (!isValidPhone(phoneNumber)) {
+        if (!isValidPhone("+961$phoneNumber")) {
             et_phone.error = getString(R.string.phone_not_valid_error)
+            return
+        } else {
+            et_phone.error = null
         }
         val code = validatePassword(password)
         if (code != 0) {
             et_password.error = getErrorMessage(code)
             return
+        } else {
+            et_password.error = null
         }
         if (password != confirmPassword) {
             et_confirm_password.error = getString(R.string.password_not_match_error)
             return
+        } else {
+            et_confirm_password.error = null
         }
 
         // all checks are good.. sending request to api
+        myActivity.startLoading()
+        registerClicked = true
+        val fields = hashMapOf(
+            FULL_NAME to name,
+            PHONE_NUMBER to phoneNumber,
+            PASSWORD to password,
+            ADDRESS to address,
+        )
+        val registerCallback =
+            ApiCallback<SingleClientResponse>(from_flag = "from_client_register", listener = this)
+        AppRetrofitClient.buildService(1).saveClient(fields).enqueue(registerCallback)
+    }
 
-        myActivity.login("client")
+    private fun login(phoneNumber: String, password: String) {
+        if (phoneNumber.isEmpty()) {
+            et_phone.error = getString(R.string.required_field_error)
+            return
+        } else {
+            et_phone.error = null
+        }
+        if (password.isEmpty()) {
+            et_password.error = getString(R.string.required_field_error)
+            return
+        } else {
+            et_password.error = null
+        }
+        if (!isValidPhone("+961$phoneNumber")) {
+            et_phone.error = getString(R.string.phone_not_valid_error)
+            return
+        } else {
+            et_phone.error = null
+        }
 
-
+        myActivity.startLoading()
+        registerClicked = true
+        val fields = hashMapOf(
+            PHONE_NUMBER to phoneNumber,
+            PASSWORD to password
+        )
+        val registerCallback =
+            ApiCallback<SingleClientResponse>(from_flag = "from_client_login", listener = this)
+        AppRetrofitClient.buildService(1).loginClient(fields).enqueue(registerCallback)
     }
 
     private fun getErrorMessage(code: Int): String? {
@@ -272,9 +376,28 @@ class ClientRegistrationFragment : BaseFragment() {
             val text = "${myActivity.location.latitude},${myActivity.location.longitude}"
             tv_address.text = text
             iv_address_ok.show()
+            tv_address.error = null
         } else {
             iv_address_ok.hide()
             tv_address.hint = getString(R.string.address)
+            tv_address.error = getString(R.string.required_field_error)
         }
+    }
+
+    override fun onSuccess(result: Any, from: String) {
+        myActivity.stopLoading()
+        registerClicked = false
+        val client = result as Client
+        val message =
+            if (from == "from_client_register") "Successful Register" else "Successful Login"
+        bt_register.showSnack(message)
+        myActivity.login("client", client.id)
+    }
+
+
+    override fun onFailure(error: String) {
+        registerClicked = false
+        myActivity.stopLoading()
+        bt_register.showSnack(error)
     }
 }

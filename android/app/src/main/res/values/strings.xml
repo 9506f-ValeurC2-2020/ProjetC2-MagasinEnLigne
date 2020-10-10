@@ -43,6 +43,10 @@
     <string name="permission_needed">Permission Needed</string>
     <string name="permission_importance_message">Dear customer, for better experience and service we need to get your exact location</string>
     <string name="my_current_location">My current location</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="try_again">Try again in %1$d seconds</string>
+    <string name="try_again_in_30">Too many attempts, try again in 30 seconds</string>
 
     <array name="categories">
         <item>all</item>

@@ -7,15 +7,28 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.RegistrationActivity
+import com.cnam.magasinenligne.api.*
+import com.cnam.magasinenligne.api.models.SingleClientResponse
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.utils.hide
 import com.cnam.magasinenligne.utils.isValidPhone
 import com.cnam.magasinenligne.utils.show
 import com.cnam.magasinenligne.utils.validatePassword
-import kotlinx.android.synthetic.main.fragment_merchant_registration.*
+import kotlinx.android.synthetic.main.fragment_merchant_registration.bt_register
+import kotlinx.android.synthetic.main.fragment_merchant_registration.cb_already_have_account
+import kotlinx.android.synthetic.main.fragment_merchant_registration.et_confirm_password
+import kotlinx.android.synthetic.main.fragment_merchant_registration.et_name
+import kotlinx.android.synthetic.main.fragment_merchant_registration.et_password
+import kotlinx.android.synthetic.main.fragment_merchant_registration.et_phone
+import kotlinx.android.synthetic.main.fragment_merchant_registration.group_login
+import kotlinx.android.synthetic.main.fragment_merchant_registration.iv_confirm_password_ok
+import kotlinx.android.synthetic.main.fragment_merchant_registration.iv_name_ok
+import kotlinx.android.synthetic.main.fragment_merchant_registration.iv_password_ok
+import kotlinx.android.synthetic.main.fragment_merchant_registration.iv_phone_ok
 
-class MerchantRegistrationFragment : BaseFragment() {
+class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     private var registerClicked = false
+    private lateinit var myActivity: RegistrationActivity
 
     /**
      * OnBackPressedCallback
@@ -23,7 +36,7 @@ class MerchantRegistrationFragment : BaseFragment() {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                activity!!.finish()
+                myActivity.finish()
             }
         }
 
@@ -32,12 +45,15 @@ class MerchantRegistrationFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        myActivity = activity!! as RegistrationActivity
         return inflater.inflate(R.layout.fragment_merchant_registration, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addOnBackPressedCallback(onBackPressedCallback)
+
+        listeners()
 
     }
 
@@ -103,14 +119,30 @@ class MerchantRegistrationFragment : BaseFragment() {
             }
         }
 
+        cb_already_have_account.setOnCheckedChangeListener { _, isChecked ->
+            group_login.visibility = if (isChecked) {
+                bt_register.text = getString(R.string.login)
+                View.INVISIBLE
+            } else {
+                bt_register.text = getString(R.string.register)
+                View.VISIBLE
+            }
+
+        }
+
         bt_register.setOnClickListener {
             if (!registerClicked) {
-                registerClicked = true
-                val name = et_name.text.toString()
-                val phoneNumber = "+961${et_phone.text}"
-                val password = et_password.text.toString()
-                val confirmPassword = et_confirm_password.text.toString()
-                register(name, phoneNumber, password, confirmPassword)
+                if (cb_already_have_account.isChecked) {
+                    val phoneNumber = et_phone.text.toString()
+                    val password = et_password.text.toString()
+                    login(phoneNumber, password)
+                } else {
+                    val name = et_name.text.toString()
+                    val phoneNumber = et_phone.text.toString()
+                    val password = et_password.text.toString()
+                    val confirmPassword = et_confirm_password.text.toString()
+                    register(name, phoneNumber, password, confirmPassword)
+                }
             }
         }
     }
@@ -124,34 +156,89 @@ class MerchantRegistrationFragment : BaseFragment() {
         if (name.isEmpty()) {
             et_name.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_name.error = null
         }
         if (phoneNumber.isEmpty()) {
             et_phone.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_phone.error = null
         }
         if (password.isEmpty()) {
             et_password.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_password.error = null
         }
         if (confirmPassword.isEmpty()) {
             et_confirm_password.error = getString(R.string.required_field_error)
             return
+        } else {
+            et_confirm_password.error = null
         }
-        if (!isValidPhone(phoneNumber)) {
+        if (!isValidPhone("+961$phoneNumber")) {
             et_phone.error = getString(R.string.phone_not_valid_error)
+            return
+        } else {
+            et_phone.error = null
         }
         val code = validatePassword(password)
         if (code != 0) {
             et_password.error = getErrorMessage(code)
             return
+        } else {
+            et_password.error = null
         }
         if (password != confirmPassword) {
             et_confirm_password.error = getString(R.string.password_not_match_error)
             return
+        } else {
+            et_confirm_password.error = null
         }
 
         // all checks are good.. sending request to api
-        (activity!! as RegistrationActivity).login("merchant")
+        myActivity.startLoading()
+        registerClicked = true
+        val fields = hashMapOf(
+            FULL_NAME to name,
+            PHONE_NUMBER to phoneNumber,
+            PASSWORD to password
+        )
+        val registerCallback =
+            ApiCallback<SingleClientResponse>(from_flag = "from_merchant_register", listener = this)
+        AppRetrofitClient.buildService(1).saveClient(fields).enqueue(registerCallback)
+    }
+
+    private fun login(phoneNumber: String, password: String) {
+        if (phoneNumber.isEmpty()) {
+            et_phone.error = getString(R.string.required_field_error)
+            return
+        } else {
+            et_phone.error = null
+        }
+        if (password.isEmpty()) {
+            et_password.error = getString(R.string.required_field_error)
+            return
+        } else {
+            et_password.error = null
+        }
+        if (!isValidPhone("+961$phoneNumber")) {
+            et_phone.error = getString(R.string.phone_not_valid_error)
+            return
+        } else {
+            et_phone.error = null
+        }
+
+        myActivity.startLoading()
+        registerClicked = true
+        val fields = hashMapOf(
+            PHONE_NUMBER to phoneNumber,
+            PASSWORD to password
+        )
+        val registerCallback =
+            ApiCallback<SingleClientResponse>(from_flag = "from_merchant_login", listener = this)
+        AppRetrofitClient.buildService(1).loginClient(fields).enqueue(registerCallback)
     }
 
     private fun getErrorMessage(code: Int): String? {
@@ -171,6 +258,14 @@ class MerchantRegistrationFragment : BaseFragment() {
     }
 
     override fun onBackStackChanged() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccess(result: Any, from: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFailure(error: String) {
         TODO("Not yet implemented")
     }
 }

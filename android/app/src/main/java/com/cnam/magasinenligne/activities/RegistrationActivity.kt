@@ -7,6 +7,7 @@ import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.adapters.RegistrationPagerAdapter
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.isUserLoggedIn
+import com.cnam.magasinenligne.userId
 import com.cnam.magasinenligne.userType
 import com.cnam.magasinenligne.utils.hide
 import com.cnam.magasinenligne.utils.lockView
@@ -40,9 +41,10 @@ class RegistrationActivity : AppCompatActivity() {
         cl_mask.lockView(false)
     }
 
-    fun login(type: String) {
+    fun login(type: String,id:String) {
         putPreference(isUserLoggedIn, true)
         putPreference(userType, type)
+        putPreference(userId, id)
         startActivity(Intent(this, LandingActivity::class.java))
         finish()
     }

@@ -11,6 +11,7 @@ class MyApplication : MultiDexApplication() {
     companion object {
         lateinit var editor: SharedPreferences.Editor
         lateinit var shared: SharedPreferences
+        var errorTimeLeft=0L
     }
 
     @SuppressLint("CommitPrefEdits")

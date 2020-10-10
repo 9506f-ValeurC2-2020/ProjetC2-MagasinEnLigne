@@ -96,6 +96,59 @@ public class ApiController {
 
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> login(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new CommonResponse("Fail", "Missing parameters 'phoneNumber' and 'password'", "").toJson();
+        }
+        if (paramMap.get("phoneNumber") != null) {
+            String phoneNumber = paramMap.get("phoneNumber");
+            Client client = clientRepository.findClientByPhoneNumber(phoneNumber);
+            if (client != null) {
+                if (paramMap.get("password") != null) {
+                    String password = paramMap.get("password");
+                    if (password.equals(client.getPassword())) {
+                        // password matches.. login accepted
+                        return new SingleClientResponse("Success", "Login accepted", client).toJson();
+                    } else {
+                        // password does not match.. login refused
+                        return new CommonResponse("Fail", "Login failed: Password does not match", "").toJson();
+                    }
+                } else {
+                    return new CommonResponse("Fail", "Missing parameters 'password'", "").toJson();
+                }
+            } else {
+                return new CommonResponse("Fail", "Login failed: No Client found", "").toJson();
+            }
+        } else {
+            return new CommonResponse("Fail", "Missing parameters 'phoneNumber'", "").toJson();
+        }
+
+    }
+
+    @RequestMapping(value = "/checkIn", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> checkIn(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+        }
+        if (paramMap.get("id") != null) {
+            String id = paramMap.get("id");
+            Client client = clientRepository.findClientById(UUID.fromString(id));
+            if (client != null) {
+                return new SingleClientResponse("Success", "Client found", client).toJson();
+            } else {
+                return new CommonResponse("Fail", "No Client", "Wrong id").toJson();
+            }
+        } else {
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+        }
+
+    }
+
     @RequestMapping(value = "/delete", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})

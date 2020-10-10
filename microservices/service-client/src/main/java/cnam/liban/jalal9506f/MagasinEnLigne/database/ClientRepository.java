@@ -21,14 +21,13 @@ import org.springframework.stereotype.Service;
 @Repository
 public interface ClientRepository extends MongoRepository<Client, String> {
 
-        //public List<Client> getAllClients();
+    @Query("{'fullName':?0}")
+    public List<Client> findClientByFirstName(String name);
 
-        @Query("{'fullName':?0}")
-        public List<Client> findClientByFirstName(String name);
-    
-        @Query("{'id':?0}")
-        public Client findClientById(UUID id);
-        
-        
-        
-    }
+    @Query("{'phoneNumber':?0}")
+    public Client findClientByPhoneNumber(String phoneNumber);
+
+    @Query("{'id':?0}")
+    public Client findClientById(UUID id);
+
+}

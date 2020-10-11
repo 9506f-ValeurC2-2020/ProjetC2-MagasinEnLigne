@@ -66,7 +66,7 @@ class AdminRegistrationFragment : BaseFragment() {
                 if (s.toString().length == 5) {
                     val code = s.toString()
                     if (code == getString(R.string.admin_code)) { // this is an admin
-                        (activity!! as RegistrationActivity).login("admin","")
+                        (activity!! as RegistrationActivity).login("admin", "")
                     } else {
                         errorCount++
                         if (errorCount == 5) {

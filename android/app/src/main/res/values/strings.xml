@@ -47,6 +47,9 @@
     <string name="login">Login</string>
     <string name="try_again">Try again in %1$d seconds</string>
     <string name="try_again_in_30">Too many attempts, try again in 30 seconds</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify_tip">You will receive an SMS shortly with 6 digits to verify your number</string>
+    <string name="code">code</string>
 
     <array name="categories">
         <item>all</item>

@@ -4,203 +4,213 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="et_name,et_confirm_password" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:text="@string/welcome_merchant"
-        android:textColor="@color/colorPrimary"
-        android:textSize="32sp"
-        app:autoSizeMaxTextSize="32sp"
-        app:autoSizeMinTextSize="20sp"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/guideline_top"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
 
-    <CheckBox
-        android:id="@+id/cb_already_have_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/already_have_an_account"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_top"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="et_name,et_confirm_password" />
 
-    <EditText
-        android:id="@+id/et_name"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_edit_text_registration"
-        android:gravity="center"
-        android:hint="@string/full_name"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorWhite"
-        android:textSize="14sp"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeMinTextSize="10sp"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/et_phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_top"
-        app:layout_constraintWidth_percent="0.8" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="@string/welcome_merchant"
+            android:textColor="@color/colorPrimary"
+            android:textSize="32sp"
+            app:autoSizeMaxTextSize="32sp"
+            app:autoSizeMinTextSize="20sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@id/guideline_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_name_ok"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/et_name"
-        app:layout_constraintEnd_toEndOf="@id/et_name"
-        app:layout_constraintTop_toTopOf="@id/et_name"
-        app:srcCompat="@drawable/ic_check" />
+        <CheckBox
+            android:id="@+id/cb_already_have_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/already_have_an_account"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/et_phone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_edit_text_registration"
-        android:gravity="center"
-        android:hint="@string/phone_number"
-        android:inputType="phone"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorWhite"
-        android:textSize="14sp"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeMinTextSize="10sp"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/et_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_name"
-        app:layout_constraintWidth_percent="0.8" />
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_edit_text_registration"
+            android:gravity="center"
+            android:hint="@string/full_name"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@id/et_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_top"
+            app:layout_constraintWidth_percent="0.8" />
 
-    <ImageView
-        android:id="@+id/iv_phone_ok"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/et_phone"
-        app:layout_constraintEnd_toEndOf="@id/et_phone"
-        app:layout_constraintTop_toTopOf="@id/et_phone"
-        app:srcCompat="@drawable/ic_check" />
+        <ImageView
+            android:id="@+id/iv_name_ok"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/et_name"
+            app:layout_constraintEnd_toEndOf="@id/et_name"
+            app:layout_constraintTop_toTopOf="@id/et_name"
+            app:srcCompat="@drawable/ic_check" />
 
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_edit_text_registration"
-        android:gravity="center"
-        android:hint="@string/password"
-        android:inputType="textWebPassword"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorWhite"
-        android:textSize="14sp"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeMinTextSize="10sp"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/et_confirm_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_phone"
-        app:layout_constraintWidth_percent="0.8" />
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_edit_text_registration"
+            android:gravity="center"
+            android:hint="@string/phone_number"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@id/et_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_name"
+            app:layout_constraintWidth_percent="0.8" />
 
-    <ImageView
-        android:id="@+id/iv_password_ok"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/et_password"
-        app:layout_constraintEnd_toEndOf="@id/et_password"
-        app:layout_constraintTop_toTopOf="@id/et_password"
-        app:srcCompat="@drawable/ic_check" />
+        <ImageView
+            android:id="@+id/iv_phone_ok"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/et_phone"
+            app:layout_constraintEnd_toEndOf="@id/et_phone"
+            app:layout_constraintTop_toTopOf="@id/et_phone"
+            app:srcCompat="@drawable/ic_check" />
 
-    <EditText
-        android:id="@+id/et_confirm_password"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_edit_text_registration"
-        android:gravity="center"
-        android:hint="@string/confirm_password"
-        android:inputType="textWebPassword"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorWhite"
-        android:textSize="14sp"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeMinTextSize="10sp"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        app:layout_constraintWidth_percent="0.8" />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_edit_text_registration"
+            android:gravity="center"
+            android:hint="@string/password"
+            android:inputType="textWebPassword"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@id/et_confirm_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_phone"
+            app:layout_constraintWidth_percent="0.8" />
 
-    <ImageView
-        android:id="@+id/iv_confirm_password_ok"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="12dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/et_confirm_password"
-        app:layout_constraintEnd_toEndOf="@id/et_confirm_password"
-        app:layout_constraintTop_toTopOf="@id/et_confirm_password"
-        app:srcCompat="@drawable/ic_check" />
+        <ImageView
+            android:id="@+id/iv_password_ok"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/et_password"
+            app:layout_constraintEnd_toEndOf="@id/et_password"
+            app:layout_constraintTop_toTopOf="@id/et_password"
+            app:srcCompat="@drawable/ic_check" />
 
-    <Button
-        android:id="@+id/bt_register"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="@string/register"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
-        app:layout_constraintWidth_percent="0.8" />
+        <EditText
+            android:id="@+id/et_confirm_password"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_edit_text_registration"
+            android:gravity="center"
+            android:hint="@string/confirm_password"
+            android:inputType="textWebPassword"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_password"
+            app:layout_constraintWidth_percent="0.8" />
 
+        <ImageView
+            android:id="@+id/iv_confirm_password_ok"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/et_confirm_password"
+            app:layout_constraintEnd_toEndOf="@id/et_confirm_password"
+            app:layout_constraintTop_toTopOf="@id/et_confirm_password"
+            app:srcCompat="@drawable/ic_check" />
+
+        <Button
+            android:id="@+id/bt_register"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/register"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+            app:layout_constraintWidth_percent="0.8" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/verify_popup"
+        layout="@layout/popup_verification"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

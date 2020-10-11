@@ -41,7 +41,7 @@ class RegistrationActivity : AppCompatActivity() {
         cl_mask.lockView(false)
     }
 
-    fun login(type: String,id:String) {
+    fun login(type: String, id: String) {
         putPreference(isUserLoggedIn, true)
         putPreference(userType, type)
         putPreference(userId, id)

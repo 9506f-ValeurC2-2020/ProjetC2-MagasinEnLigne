@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_verification"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_shadow"
+    android:clickable="true">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_guide_04"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_guide_96"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_verification"
+        android:elevation="5dp"
+        app:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/vertical_guide_96"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toStartOf="@id/vertical_guide_04"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/inner_horizontal_guide_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/inner_vertical_guide_06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.06" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/inner_vertical_guide_92"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.92" />
+
+
+        <TextView
+            android:id="@+id/tv_verification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/all_round_gothic_w01_medium"
+            android:gravity="center"
+            android:text="@string/verification_code"
+            android:textColor="@color/colorWhite"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
+            app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"
+            app:layout_constraintTop_toBottomOf="@id/inner_horizontal_guide_15" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/all_round_gothic_w01_medium"
+            android:gravity="center"
+            android:text="@string/verify_tip"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/et_code"
+            app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
+            app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"
+            app:layout_constraintTop_toBottomOf="@id/tv_verification" />
+
+        <EditText
+            android:id="@+id/et_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text_registration"
+            android:gravity="center"
+            android:hint="@string/code"
+            android:imeOptions="actionGo"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="6dp"
+            android:singleLine="true"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
+            app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_verification_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
+            app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"
+            app:layout_constraintTop_toBottomOf="@id/et_code" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

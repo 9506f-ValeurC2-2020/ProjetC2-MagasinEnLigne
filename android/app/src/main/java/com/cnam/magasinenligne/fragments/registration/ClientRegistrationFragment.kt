@@ -16,7 +16,14 @@ import com.cnam.magasinenligne.api.models.Client
 import com.cnam.magasinenligne.api.models.SingleClientResponse
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.utils.*
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.fragment_client_registration.*
+import kotlinx.android.synthetic.main.popup_verification.*
+import java.util.concurrent.TimeUnit
 
 class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     private var mapClicked = false
@@ -27,6 +34,10 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     )
 
     private lateinit var myActivity: RegistrationActivity
+    private lateinit var auth: FirebaseAuth
+    private lateinit var storedVerificationId: String
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var credential: PhoneAuthCredential
 
     /**
      * OnBackPressedCallback
@@ -34,9 +45,33 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                myActivity.finish()
+                if (verify_popup.isVisible()) {
+                    verify_popup.hide()
+                } else {
+                    myActivity.finish()
+                }
             }
         }
+
+    private val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+            signInWithPhoneAuthCredential(credential)
+        }
+
+        override fun onVerificationFailed(firebaseException: FirebaseException) {
+            this@ClientRegistrationFragment.logDebug(firebaseException.message.toString())
+            bt_register.showSnack("Fail: ${firebaseException.message}")
+        }
+
+        override fun onCodeSent(
+            verificationId: String,
+            token: PhoneAuthProvider.ForceResendingToken
+        ) {
+            storedVerificationId = verificationId
+            resendToken = token
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +87,7 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         addOnBackPressedCallback(onBackPressedCallback)
         myActivity.addOnBackStackListener(this)
         listeners()
+        auth = FirebaseAuth.getInstance()
     }
 
     private fun listeners() {
@@ -199,6 +235,35 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         }
     }
 
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(myActivity) { task ->
+                if (task.isSuccessful) {
+                    myActivity.startLoading()
+                    registerClicked = true
+                    val fields = hashMapOf(
+                        FULL_NAME to et_name.text.toString(),
+                        PHONE_NUMBER to et_phone.text.toString(),
+                        PASSWORD to et_password.text.toString(),
+                        ADDRESS to tv_address.text.toString()
+                    )
+                    val registerCallback =
+                        ApiCallback<SingleClientResponse>(
+                            from_flag = "from_client_register",
+                            listener = this
+                        )
+                    AppRetrofitClient.buildService(1).saveClient(fields).enqueue(registerCallback)
+                    verify_popup.hide()
+                } else {
+                    // Sign in failed, display a message and update the UI
+                    logDebug("signInWithCredential:failure ${task.exception}")
+                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        bt_register.showSnack("Invalid Code")
+                    }
+                }
+            }
+    }
+
     private fun handlePermissionPopup() {
         requestPermissions(locationPermission, locationRequest)
         val granted = verifyPermissions(myActivity, locationRequest, locationPermission)
@@ -263,19 +328,8 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         } else {
             et_confirm_password.error = null
         }
-
-        // all checks are good.. sending request to api
-        myActivity.startLoading()
-        registerClicked = true
-        val fields = hashMapOf(
-            FULL_NAME to name,
-            PHONE_NUMBER to phoneNumber,
-            PASSWORD to password,
-            ADDRESS to address,
-        )
-        val registerCallback =
-            ApiCallback<SingleClientResponse>(from_flag = "from_client_register", listener = this)
-        AppRetrofitClient.buildService(1).saveClient(fields).enqueue(registerCallback)
+        // all checks are good.. verifying phone with firebase
+        requestVerificationCode(phoneNumber)
     }
 
     private fun login(phoneNumber: String, password: String) {
@@ -318,6 +372,31 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
             else -> getString(R.string.password_special_character_error)
         }
 
+    }
+
+    private fun requestVerificationCode(phoneNumber: String) {
+        verify_popup.show()
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+            "+961$phoneNumber", // Phone number to verify
+            60, // Timeout duration
+            TimeUnit.SECONDS, // Unit of timeout
+            myActivity, // Activity (for callback binding)
+            callbacks
+        )
+        et_code.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().length == 6) {
+                    credential = PhoneAuthProvider.getCredential(storedVerificationId, s.toString())
+                    signInWithPhoneAuthCredential(credential)
+                }
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(

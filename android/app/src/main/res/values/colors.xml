@@ -6,5 +6,6 @@
     <color name="colorEditTextRegistration">#805C7647</color>
     <color name="colorBlue">#2196F3</color>
     <color name="colorGrayTransparent">#80AAA6A6</color>
+    <color name="colorShadow">#40000000</color>
     <color name="colorError">#f00</color>
 </resources>

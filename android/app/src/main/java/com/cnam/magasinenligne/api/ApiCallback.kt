@@ -30,13 +30,13 @@ class ApiCallback<T : CommonResponse>(
             if (response.code() == 200) {
                 val body = response.body()
                 when (from_flag) {
-                    "from_client_register"->{
+                    "from_client_register" -> {
                         val clientResponse = body as SingleClientResponse
                         result = if (body.status == SUCCESS) {
                             clientResponse.client
                         } else FAILED
                     }
-                    "from_client_login"->{
+                    "from_client_login" -> {
                         val clientResponse = body as SingleClientResponse
                         result = if (body.status == SUCCESS) {
                             clientResponse.client

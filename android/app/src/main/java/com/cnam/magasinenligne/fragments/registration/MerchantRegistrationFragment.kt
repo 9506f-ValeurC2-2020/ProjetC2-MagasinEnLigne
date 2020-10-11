@@ -11,6 +11,7 @@ import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.RegistrationActivity
 import com.cnam.magasinenligne.api.*
 import com.cnam.magasinenligne.api.models.SingleClientResponse
+import com.cnam.magasinenligne.api.models.Vendeur
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.utils.*
 import com.google.firebase.FirebaseException
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit
 
 class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     private var registerClicked = false
+    private var resendClicked = false
     private lateinit var myActivity: RegistrationActivity
     private lateinit var auth: FirebaseAuth
     private lateinit var storedVerificationId: String
@@ -60,7 +62,10 @@ class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         ) {
             storedVerificationId = verificationId
             resendToken = token
+        }
 
+        override fun onCodeAutoRetrievalTimeOut(p0: String) {
+            tv_resend.show()
         }
     }
 
@@ -235,6 +240,19 @@ class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
             myActivity, // Activity (for callback binding)
             callbacks
         )
+        tv_resend.setOnClickListener {
+            if (!resendClicked) {
+                resendClicked = true
+                PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                    "+961$phoneNumber",
+                    60,
+                    TimeUnit.SECONDS,
+                    myActivity,
+                    callbacks,
+                    resendToken
+                )
+            }
+        }
         et_code.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -331,10 +349,18 @@ class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     }
 
     override fun onSuccess(result: Any, from: String) {
-        TODO("Not yet implemented")
+        myActivity.stopLoading()
+        registerClicked = false
+        val vendeur = result as Vendeur
+        val message =
+            if (from == "from_merchant_register") "Successful Register" else "Successful Login"
+        bt_register.showSnack(message)
+        myActivity.login("merchant", vendeur.id)
     }
 
     override fun onFailure(error: String) {
-        TODO("Not yet implemented")
+        registerClicked = false
+        myActivity.stopLoading()
+        bt_register.showSnack(error)
     }
 }

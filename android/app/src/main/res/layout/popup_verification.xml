@@ -78,7 +78,7 @@
             android:gravity="center"
             android:text="@string/verify_tip"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/et_code"
             app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
             app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"
@@ -98,18 +98,21 @@
             android:singleLine="true"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_resend"
             app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
             app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_message" />
 
 
         <TextView
-            android:id="@+id/tv_verification_counter"
+            android:id="@+id/tv_resend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:textSize="28sp"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:text="@string/resend_code"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/inner_vertical_guide_92"
             app:layout_constraintStart_toStartOf="@id/inner_vertical_guide_06"

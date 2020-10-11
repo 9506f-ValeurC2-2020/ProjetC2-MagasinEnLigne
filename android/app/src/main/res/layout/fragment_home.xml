@@ -3,14 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/layout_home_client"
+        android:visibility="gone"
+        android:id="@+id/layout_client"/>
+
+    <include layout="@layout/layout_home_merchant"
+        android:visibility="gone"
+        android:id="@+id/layout_merchant"/>
+
+    <include layout="@layout/layout_home_admin"
+        android:visibility="gone"
+        android:id="@+id/layout_admin"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

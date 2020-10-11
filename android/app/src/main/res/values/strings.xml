@@ -48,8 +48,16 @@
     <string name="try_again">Try again in %1$d seconds</string>
     <string name="try_again_in_30">Too many attempts, try again in 30 seconds</string>
     <string name="verification_code">Verification Code</string>
-    <string name="verify_tip">You will receive an SMS shortly with 6 digits to verify your number</string>
+    <string name="verify_tip">You will receive an SMS shortly with 6 digits to verify your number.\nPlease don\'t bother yourself, your phone number will be verified automatically.</string>
     <string name="code">code</string>
+    <string name="resend_code">Resend code</string>
+    <string name="my_products">My Products</string>
+    <string name="my_customers">My Customers</string>
+    <string name="more_details">More Details</string>
+    <string name="my_wish_list">My Wish List</string>
+    <string name="find_us">Find us</string>
+    <string name="my_orders">My Orders</string>
+    <string name="my_wallet">My Wallet</string>
 
     <array name="categories">
         <item>all</item>

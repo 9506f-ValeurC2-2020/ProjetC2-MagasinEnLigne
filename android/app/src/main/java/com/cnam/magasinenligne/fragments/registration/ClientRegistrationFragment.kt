@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit
 class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     private var mapClicked = false
     private var registerClicked = false
+    private var resendClicked = false
     private val locationRequest = 1000
     private val locationPermission = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -69,8 +70,13 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         ) {
             storedVerificationId = verificationId
             resendToken = token
-
         }
+
+        override fun onCodeAutoRetrievalTimeOut(p0: String) {
+            bt_register.showSnack("Auto verification failed")
+            tv_resend.show()
+        }
+
     }
 
     override fun onCreateView(
@@ -383,6 +389,19 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
             myActivity, // Activity (for callback binding)
             callbacks
         )
+        tv_resend.setOnClickListener {
+            if (!resendClicked) {
+                resendClicked = true
+                PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                    "+961$phoneNumber",
+                    60,
+                    TimeUnit.SECONDS,
+                    myActivity,
+                    callbacks,
+                    resendToken
+                )
+            }
+        }
         et_code.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }

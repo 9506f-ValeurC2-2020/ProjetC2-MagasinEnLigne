@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:lines="1"
-        android:text="Home Shopping"
+        android:text="@string/home_shopping"
         android:textColor="@color/colorPrimary"
         android:textSize="30sp"
         app:autoSizeMaxTextSize="30sp"

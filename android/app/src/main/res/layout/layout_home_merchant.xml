@@ -21,7 +21,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_sales"
+        android:id="@+id/cl_news"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,6 @@
         app:layout_constraintWidth_percent="0.95">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_sales_2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,34 +38,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="sales_buy_now.json"
-            app:lottie_imageAssetsFolder="assets"
-            app:lottie_loop="true" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_sales_1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.4"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="sale_offer.json"
+            app:lottie_fileName="breaking_news.json"
             app:lottie_imageAssetsFolder="assets"
             app:lottie_loop="true" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center"
-            android:text="@string/more_details"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/send_broadcast"
             android:textColor="@color/colorBlue"
-            android:textSize="16sp"
+            android:textSize="12sp"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.15"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.4" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,7 +66,7 @@
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_sales"
+        app:layout_constraintTop_toBottomOf="@id/cl_news"
         app:layout_constraintWidth_percent="0.95">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,8 +84,8 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:src="@drawable/customer"
                 android:scaleType="fitXY"
+                android:src="@drawable/customer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

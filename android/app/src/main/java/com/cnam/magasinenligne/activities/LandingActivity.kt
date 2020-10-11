@@ -66,4 +66,11 @@ class LandingActivity : AppCompatActivity() {
     fun addOnBackStackListener(baseFragment: BaseFragment) {
         supportFragmentManager.addOnBackStackChangedListener(baseFragment)
     }
+
+    fun hideNavigation() {
+        bnv_utilities.hide()
+    }
+
+    fun hideShop(): MenuItem = bnv_utilities.menu.getItem(1).setVisible(false)
+
 }

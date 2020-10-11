@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.StrictMode
 import androidx.multidex.MultiDexApplication
+import com.cnam.magasinenligne.api.models.Client
+import com.cnam.magasinenligne.api.models.Vendeur
 
 class MyApplication : MultiDexApplication() {
 
@@ -12,6 +14,8 @@ class MyApplication : MultiDexApplication() {
         lateinit var editor: SharedPreferences.Editor
         lateinit var shared: SharedPreferences
         var errorTimeLeft = 0L
+        lateinit var clientProfile: Client
+        lateinit var merchantProfile: Vendeur
     }
 
     @SuppressLint("CommitPrefEdits")

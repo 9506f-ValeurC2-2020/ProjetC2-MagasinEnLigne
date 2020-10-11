@@ -58,6 +58,13 @@
     <string name="find_us">Find us</string>
     <string name="my_orders">My Orders</string>
     <string name="my_wallet">My Wallet</string>
+    <string name="all_delivery_items">All delivery items</string>
+    <string name="all_orders">All orders</string>
+    <string name="all_products">All products</string>
+    <string name="all_merchants">All merchants</string>
+    <string name="all_clients">All clients</string>
+    <string name="send_broadcast">Send a broadcast for your favorite customers</string>
+    <string name="home_shopping">Home Shopping</string>
 
     <array name="categories">
         <item>all</item>

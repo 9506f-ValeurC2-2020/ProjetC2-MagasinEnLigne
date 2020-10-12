@@ -197,6 +197,64 @@ public class ApiController {
         }
     }
 
+    @RequestMapping(value = "/putOnSale", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> putOnSale(@RequestParam Map<String, String> paramMap, MultipartFile image) throws Exception {
+        if (paramMap != null) {
+            if (paramMap.get("id") != null) {
+                Product oldProduct = productRepository.findProductById((UUID.fromString(paramMap.get("id"))));
+                if (oldProduct == null) {
+                    return new CommonResponse("Fail", "No such product", "Product with provided ID does not exist").toJson();
+                }
+                if (paramMap.get("salePrice") != null) {
+                    double salePrice = Double.parseDouble(paramMap.get("salePrice"));
+                    if (salePrice >= oldProduct.getPrice()) {
+                        return new CommonResponse("Fail", "Error", "Sale price must be less than old price").toJson();
+                    }
+                    oldProduct.setOnSale(true);
+                    oldProduct.setSalePrice(salePrice);
+                    productRepository.save(oldProduct);
+                    return new SingleProductResponse("Success", "Product is now on sale", oldProduct).toJson();
+                } else {
+                    return new CommonResponse("Fail", "Missing fields", "Missing salePrice field").toJson();
+                }
+
+            } else {
+                return new CommonResponse("Fail", "Missing fields", "Missing ID field").toJson();
+            }
+        } else {
+            return new CommonResponse("Fail", "Missing fields", "Missing id, oldPrice fields").toJson();
+        }
+    }
+
+    @RequestMapping(value = "/findSales", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> findSales(@RequestParam Map<String, String> paramMap, MultipartFile image) throws Exception {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new CommonResponse("Fail", "Missing parameters 'pageIndex'", "").toJson();
+        }
+        if (paramMap.get("pageIndex") != null) {
+            int index = Integer.parseInt(paramMap.get("pageIndex"));
+            Pageable paging = PageRequest.of(index, 20);
+            Page<Product> pagedResult = productRepository.findAll(paging);
+            List<Product> page = pagedResult.toList();
+            List<Product> result = new ArrayList<>();
+            page.stream().forEachOrdered(c -> {
+                Product p = c;
+                if (c.getImage() != null) {
+                    p.setImage(decompressImage(c.getImage()));
+                }
+                if (p.isOnSale()) {
+                    result.add(p);
+                }
+            });
+            ProductResponse response = new MultipleProductResponse("Success", "Products list", result);
+            return response.toJson();
+        }
+        return new CommonResponse("Fail", "Missing value of 'pageIndex'", "").toJson();
+    }
 
     // compress the image bytes before storing it in the database
     public static byte[] compressImage(byte[] data) {
@@ -212,7 +270,7 @@ public class ApiController {
         try {
             outputStream.close();
         } catch (IOException e) {
-            System.out.println("Exception error is: "+ e.getMessage());
+            System.out.println("Exception error is: " + e.getMessage());
         }
         System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
         return outputStream.toByteArray();

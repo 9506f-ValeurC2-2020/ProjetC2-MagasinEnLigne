@@ -28,6 +28,10 @@ public class Product {
     private int sex; // 0 for male, 1 for female
     @Field("price")
     private double price;
+    @Field("onSale")
+    private boolean onSale;
+    @Field("salePrice")
+    private double salePrice;
     @Field("age category")
     private String ageCategory; // ex: 10-12 for clothes 18-28 ...
     @Field("image")
@@ -37,13 +41,32 @@ public class Product {
         this.id = UUID.randomUUID();
     }
 
-    public Product(UUID id, String name, String category, int sex, double price, String ageCategory) {
+    public Product(UUID id, String name, String category, int sex, double price, boolean onSale, double salePrice, String ageCategory, byte[] image) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.sex = sex;
         this.price = price;
+        this.onSale = onSale;
+        this.salePrice = salePrice;
         this.ageCategory = ageCategory;
+        this.image = image;
+    }
+
+    public boolean isOnSale() {
+        return onSale;
+    }
+
+    public void setOnSale(boolean onSale) {
+        this.onSale = onSale;
+    }
+
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = salePrice;
     }
 
     public UUID getId() {

@@ -200,7 +200,7 @@ public class ApiController {
     @RequestMapping(value = "/putOnSale", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> putOnSale(@RequestParam Map<String, String> paramMap, MultipartFile image) throws Exception {
+    public ResponseEntity<Object> putOnSale(@RequestParam Map<String, String> paramMap) throws Exception {
         if (paramMap != null) {
             if (paramMap.get("id") != null) {
                 Product oldProduct = productRepository.findProductById((UUID.fromString(paramMap.get("id"))));
@@ -231,7 +231,7 @@ public class ApiController {
     @RequestMapping(value = "/findSales", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> findSales(@RequestParam Map<String, String> paramMap, MultipartFile image) throws Exception {
+    public ResponseEntity<Object> findSales(@RequestParam Map<String, String> paramMap) throws Exception {
         if (paramMap == null || paramMap.isEmpty()) {
             return new CommonResponse("Fail", "Missing parameters 'pageIndex'", "").toJson();
         }

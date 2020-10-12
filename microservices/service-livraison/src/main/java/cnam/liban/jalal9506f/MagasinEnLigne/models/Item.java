@@ -19,13 +19,13 @@ public class Item {
     @Field("id")
     private UUID id;
     
-    @Field("order id")
+    @Field("orderId")
     private UUID orderId;
     
     @Field("status")
     private int status; // 0 for pending delivery 1 for delivered item
     
-    @Field("delivery charges")
+    @Field("deliveryCharges")
     private double deliveryCharges; // order cost+ delivery charges
 
     public Item() {

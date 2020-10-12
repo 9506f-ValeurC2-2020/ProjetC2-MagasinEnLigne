@@ -38,27 +38,27 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveVendeur(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing fullName, password, phoneNumber fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing fullName, password, phoneNumber fields").toJson(0);
         }
         Vendeur newVendeur = new Vendeur();
         if (map.get("fullName") == null) {
-            return new CommonResponse("Fail", "Missing field fullName", "fullName is required").toJson();
+            return new CommonResponse("Fail", "Missing field fullName", "fullName is required").toJson(0);
         } else {
             newVendeur.setFullName(map.get("fullName"));
         }
         if (map.get("password") == null) {
-            return new CommonResponse("Fail", "Missing field password", "password is required").toJson();
+            return new CommonResponse("Fail", "Missing field password", "password is required").toJson(0);
         } else {
             newVendeur.setPassword(map.get("password"));
         }
         if (map.get("phoneNumber") == null) {
-            return new CommonResponse("Fail", "Missing field phoneNumber", "phoneNumber is required").toJson();
+            return new CommonResponse("Fail", "Missing field phoneNumber", "phoneNumber is required").toJson(0);
         } else {
             newVendeur.setPhoneNumber(map.get("phoneNumber"));
         }
         vendeurRepository.save(newVendeur);
         VendeurResponse response = new SingleVendeurResponse("Success", "Vendeur created successfully", newVendeur);
-        return response.toJson();
+        return response.toJson(1);
     }
 
     @RequestMapping(value = "/getVendeurs", method = RequestMethod.POST,
@@ -66,7 +66,7 @@ public class ApiController {
     public ResponseEntity<Object> getVendeurs() {
         List<Vendeur> list = vendeurRepository.findAll();
         VendeurResponse response = new MultipleVendeurResponse("Success", "vendeurs list", list);
-        return response.toJson();
+        return response.toJson(1);
     }
 
     @RequestMapping(value = "/findVendeur", method = RequestMethod.POST,
@@ -74,7 +74,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> findVendeur(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson(0);
         }
         if (paramMap.get("name") != null) {
             String name = paramMap.get("name");
@@ -84,9 +84,9 @@ public class ApiController {
                 result.add(c);
             });
             VendeurResponse response = new MultipleVendeurResponse("Success", result.size() + " Vendeurs found", result);
-            return response.toJson();
+            return response.toJson(1);
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson(0);
         }
 
     }
@@ -96,7 +96,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> login(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'phoneNumber' and 'password'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'phoneNumber' and 'password'", "").toJson(0);
         }
         if (paramMap.get("phoneNumber") != null) {
             String phoneNumber = paramMap.get("phoneNumber");
@@ -106,19 +106,19 @@ public class ApiController {
                     String password = paramMap.get("password");
                     if (password.equals(vendeur.getPassword())) {
                         // password matches.. login accepted
-                        return new SingleVendeurResponse("Success", "Login accepted", vendeur).toJson();
+                        return new SingleVendeurResponse("Success", "Login accepted", vendeur).toJson(1);
                     } else {
                         // password does not match.. login refused
-                        return new CommonResponse("Fail", "Login failed: Password does not match", "").toJson();
+                        return new CommonResponse("Fail", "Login failed: Password does not match", "").toJson(0);
                     }
                 } else {
-                    return new CommonResponse("Fail", "Missing parameters 'password'", "").toJson();
+                    return new CommonResponse("Fail", "Missing parameters 'password'", "").toJson(0);
                 }
             } else {
-                return new CommonResponse("Fail", "Login failed: No Vendeur found", "").toJson();
+                return new CommonResponse("Fail", "Login failed: No Vendeur found", "").toJson(0);
             }
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'phoneNumber'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'phoneNumber'", "").toJson(0);
         }
 
     }
@@ -128,18 +128,18 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> checkIn(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
         if (paramMap.get("id") != null) {
             String id = paramMap.get("id");
             Vendeur vendeur = vendeurRepository.findVendeurById(UUID.fromString(id));
             if (vendeur != null) {
-                return new SingleVendeurResponse("Success", "Vendeur found", vendeur).toJson();
+                return new SingleVendeurResponse("Success", "Vendeur found", vendeur).toJson(1);
             } else {
-                return new CommonResponse("Fail", "No Vendeur", "Wrong id").toJson();
+                return new CommonResponse("Fail", "No Vendeur", "Wrong id").toJson(0);
             }
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
 
     }
@@ -149,17 +149,17 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> delete(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
         if (paramMap.get("id") != null) {
             Vendeur vendeur = vendeurRepository.findVendeurById(UUID.fromString(paramMap.get("id")));
             if (vendeur != null) {
                 vendeurRepository.delete(vendeur);
-                return new CommonResponse("Success", "Deleted successfully", "").toJson();
+                return new CommonResponse("Success", "Deleted successfully", "").toJson(1);
             }
-            return new CommonResponse("Fail", "No vendeur", "Vendeur with provided ID does not exist").toJson();
+            return new CommonResponse("Fail", "No vendeur", "Vendeur with provided ID does not exist").toJson(0);
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
 
     }
@@ -173,7 +173,7 @@ public class ApiController {
             if (paramMap.get("id") != null) {
                 Vendeur oldVendeur = vendeurRepository.findVendeurById((UUID.fromString(paramMap.get("id"))));
                 if (oldVendeur == null) {
-                    return new CommonResponse("Fail", "No such vendeur", "Vendeur with provided ID does not exist").toJson();
+                    return new CommonResponse("Fail", "No such vendeur", "Vendeur with provided ID does not exist").toJson(0);
                 }
                 if (paramMap.get("fullName") != null) {
                     oldVendeur.setFullName(paramMap.get("fullName"));
@@ -188,14 +188,14 @@ public class ApiController {
                     oldVendeur.setEmail(paramMap.get("email"));
                 }
                 vendeurRepository.save(oldVendeur);
-                return new SingleVendeurResponse("Success", "Updated successfully", oldVendeur).toJson();
+                return new SingleVendeurResponse("Success", "Updated successfully", oldVendeur).toJson(1);
 
             } else {
-                return new CommonResponse("Fail", "Missing fields", "Missing ID field").toJson();
+                return new CommonResponse("Fail", "Missing fields", "Missing ID field").toJson(0);
             }
 
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing id, fullName, password, phoneNumber fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing id, fullName, password, phoneNumber fields").toJson(0);
         }
     }
 }

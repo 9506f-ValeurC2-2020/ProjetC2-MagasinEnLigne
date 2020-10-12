@@ -5,6 +5,7 @@
  */
 package cnam.liban.jalal9506f.MagasinEnLigne.models;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -41,6 +42,6 @@ public abstract class ClientResponse {
         this.message = message;
     }
 
-    public abstract ResponseEntity<Object> toJson();
+    public abstract ResponseEntity<Object> toJson(int status);
 
 }

@@ -40,38 +40,38 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveOrder(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing description, time, cost, fromClient and toVendeur fields").toJson();
+            return new CommonResponse("Fail", "Missing fields", "Missing description, time, cost, fromClient and toVendeur fields").toJson(0);
         }
         Order newOrder = new Order();
         if (map.get("description") == null) {
-            return new CommonResponse("Fail", "Missing field description", "description is required").toJson();
+            return new CommonResponse("Fail", "Missing field description", "description is required").toJson(0);
         } else {
             newOrder.setDescription(map.get("description"));
         }
         if (map.get("time") == null) {
-            return new CommonResponse("Fail", "Missing field time", "time is required").toJson();
+            return new CommonResponse("Fail", "Missing field time", "time is required").toJson(0);
         } else {
             newOrder.setTime(Long.parseLong(map.get("time")));
         }
         if (map.get("cost") == null) {
-            return new CommonResponse("Fail", "Missing field cost", "cost is required").toJson();
+            return new CommonResponse("Fail", "Missing field cost", "cost is required").toJson(0);
         } else {
             newOrder.setCost(Double.parseDouble(map.get("cost")));
         }
         if (map.get("fromClient") == null) {
-            return new CommonResponse("Fail", "Missing field fromClient", "fromClient is required").toJson();
+            return new CommonResponse("Fail", "Missing field fromClient", "fromClient is required").toJson(0);
         } else {
             newOrder.setFromClientId(UUID.fromString(map.get("fromClient")));
         }
         if (map.get("toVendeur") == null) {
-            return new CommonResponse("Fail", "Missing field toVendeur", "toVendeur is required").toJson();
+            return new CommonResponse("Fail", "Missing field toVendeur", "toVendeur is required").toJson(0);
         } else {
             newOrder.setToVendeurId(UUID.fromString(map.get("toVendeur")));
         }
 
         orderRepository.save(newOrder);
         OrderResponse response = new SingleOrderResponse("Success", "Order created successfully", newOrder);
-        return response.toJson();
+        return response.toJson(1);
     }
 
     @RequestMapping(value = "/getOrders", method = RequestMethod.POST,
@@ -79,7 +79,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getOrders(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'pageIndex'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'pageIndex'", "").toJson(0);
         }
         if (paramMap.get("pageIndex") != null) {
             int index = Integer.parseInt(paramMap.get("pageIndex"));
@@ -87,9 +87,9 @@ public class ApiController {
             Page<Order> pagedResult = orderRepository.findAll(paging);
             List<Order> page = pagedResult.toList();
             OrderResponse response = new MultipleOrderResponse("Success", "Orders list", page);
-            return response.toJson();
+            return response.toJson(1);
         }
-        return new CommonResponse("Fail", "Missing value of 'pageIndex'", "").toJson();
+        return new CommonResponse("Fail", "Missing value of 'pageIndex'", "").toJson(0);
     }
 
     @RequestMapping(value = "/findOrder", method = RequestMethod.POST,
@@ -97,15 +97,15 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> findOrder(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
         if (paramMap.get("id") != null) {
             UUID id = UUID.fromString(paramMap.get("id"));
             Order order = orderRepository.findOrderById(id);
             OrderResponse response = new SingleOrderResponse("Success", "Order found", order);
-            return response.toJson();
+            return response.toJson(1);
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
 
     }
@@ -115,17 +115,17 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> delete(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
         if (paramMap.get("id") != null) {
             Order order = orderRepository.findOrderById(UUID.fromString(paramMap.get("id")));
             if (order != null) {
                 orderRepository.delete(order);
-                return new CommonResponse("Success", "Deleted successfully", "").toJson();
+                return new CommonResponse("Success", "Deleted successfully", "").toJson(1);
             }
-            return new CommonResponse("Fail", "No Order", "Order with provided ID does not exist").toJson();
+            return new CommonResponse("Fail", "No Order", "Order with provided ID does not exist").toJson(0);
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson();
+            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
         }
 
     }

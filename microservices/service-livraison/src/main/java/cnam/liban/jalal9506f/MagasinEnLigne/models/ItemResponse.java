@@ -40,5 +40,5 @@ public abstract class ItemResponse {
         this.message = message;
     }
 
-    public abstract ResponseEntity<Object> toJson();
+    public abstract ResponseEntity<Object> toJson(int status);
 }

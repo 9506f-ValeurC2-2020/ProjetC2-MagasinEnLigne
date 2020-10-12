@@ -32,11 +32,11 @@ public class Product {
     private boolean onSale;
     @Field("salePrice")
     private double salePrice;
-    @Field("age category")
+    @Field("ageCategory")
     private String ageCategory; // ex: 10-12 for clothes 18-28 ...
     @Field("image")
     private byte[] image;
-   
+
     public Product() {
         this.id = UUID.randomUUID();
     }
@@ -125,5 +125,4 @@ public class Product {
         this.image = image;
     }
 
-    
 }

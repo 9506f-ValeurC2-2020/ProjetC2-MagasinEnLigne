@@ -42,6 +42,6 @@ public abstract class ClientResponse {
         this.message = message;
     }
 
-    public abstract ResponseEntity<Object> toJson(int status);
+    public abstract ResponseEntity<Object> toJson();
 
 }

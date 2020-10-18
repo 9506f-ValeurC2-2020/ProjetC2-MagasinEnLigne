@@ -6,7 +6,6 @@
 package cnam.liban.jalal9506f.MagasinEnLigne.api;
 
 import cnam.liban.jalal9506f.MagasinEnLigne.database.ProductRepository;
-import cnam.liban.jalal9506f.MagasinEnLigne.models.CommonResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.MultipleProductResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.Product;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.ProductResponse;
@@ -48,31 +47,31 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveProduct(@RequestParam Map<String, String> map, MultipartFile image) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing name, category, sex, price and ageCategory fields").toJson(0);
+            return new SingleProductResponse("Fail","Missing name, category, sex, price and ageCategory fields",null).toJson();
         }
         Product newProduct = new Product();
         if (map.get("name") == null) {
-            return new CommonResponse("Fail", "Missing field name", "name is required").toJson(0);
+            return new SingleProductResponse("Fail", "name is required",null).toJson();
         } else {
             newProduct.setName(map.get("name"));
         }
         if (map.get("category") == null) {
-            return new CommonResponse("Fail", "Missing field category", "category is required").toJson(0);
+            return new SingleProductResponse("Fail","category is required",null).toJson();
         } else {
             newProduct.setCategory(map.get("category"));
         }
         if (map.get("sex") == null) {
-            return new CommonResponse("Fail", "Missing field sex", "sex is required").toJson(0);
+            return new SingleProductResponse("Fail", "sex is required",null).toJson();
         } else {
             newProduct.setSex(Integer.parseInt(map.get("sex")));
         }
         if (map.get("price") == null) {
-            return new CommonResponse("Fail", "Missing field price", "price is required").toJson(0);
+            return new SingleProductResponse("Fail", "price is required",null).toJson();
         } else {
             newProduct.setPrice(Double.parseDouble(map.get("price")));
         }
         if (map.get("ageCategory") == null) {
-            return new CommonResponse("Fail", "Missing field ageCategory", "ageCategory is required").toJson(0);
+            return new SingleProductResponse("Fail", "ageCategory is required",null).toJson();
         } else {
             newProduct.setAgeCategory(map.get("ageCategory"));
         }
@@ -81,7 +80,7 @@ public class ApiController {
         }
         productRepository.save(newProduct);
         ProductResponse response = new SingleProductResponse("Success", "Product created successfully", newProduct);
-        return response.toJson(1);
+        return response.toJson();
     }
 
     @RequestMapping(value = "/getProducts", method = RequestMethod.POST,
@@ -89,7 +88,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> getProducts(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'pageIndex'", "").toJson(0);
+            return new SingleProductResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
         }
         if (paramMap.get("pageIndex") != null) {
             int index = Integer.parseInt(paramMap.get("pageIndex"));
@@ -105,9 +104,9 @@ public class ApiController {
                 result.add(p);
             });
             ProductResponse response = new MultipleProductResponse("Success", "Products list", result);
-            return response.toJson(1);
+            return response.toJson();
         }
-        return new CommonResponse("Fail", "Missing value of 'pageIndex'", "").toJson(0);
+        return new SingleProductResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
     }
 
     @RequestMapping(value = "/findProduct", method = RequestMethod.POST,
@@ -115,7 +114,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> findProduct(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson(0);
+            return new SingleProductResponse("Fail", "Missing parameters 'name'", null).toJson();
         }
         if (paramMap.get("name") != null) {
             String name = paramMap.get("name");
@@ -129,9 +128,9 @@ public class ApiController {
                 result.add(p);
             });
             ProductResponse response = new MultipleProductResponse("Success", result.size() + " Products found", result);
-            return response.toJson(1);
+            return response.toJson();
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson(0);
+            return new SingleProductResponse("Fail", "Missing parameters 'name'", null).toJson();
         }
 
     }
@@ -141,17 +140,17 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> delete(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
+            return new SingleProductResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
         if (paramMap.get("id") != null) {
             Product product = productRepository.findProductById(UUID.fromString(paramMap.get("id")));
             if (product != null) {
                 productRepository.delete(product);
-                return new CommonResponse("Success", "Deleted successfully", "").toJson(1);
+                return new SingleProductResponse("Success", "Deleted successfully", null).toJson();
             }
-            return new CommonResponse("Fail", "No Product", "Product with provided ID does not exist").toJson(0);
+            return new SingleProductResponse("Fail", "Product with provided ID does not exist",null).toJson();
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
+            return new SingleProductResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
 
     }
@@ -165,7 +164,7 @@ public class ApiController {
             if (paramMap.get("id") != null) {
                 Product oldProduct = productRepository.findProductById((UUID.fromString(paramMap.get("id").toString())));
                 if (oldProduct == null) {
-                    return new CommonResponse("Fail", "No such product", "Product with provided ID does not exist").toJson(0);
+                    return new SingleProductResponse("Fail","Product with provided ID does not exist",null).toJson();
                 }
                 if (paramMap.get("name") != null) {
                     oldProduct.setName(paramMap.get("name").toString());
@@ -186,14 +185,14 @@ public class ApiController {
                     oldProduct.setImage(compressImage(image.getBytes()));
                 }
                 productRepository.save(oldProduct);
-                return new SingleProductResponse("Success", "Updated successfully", oldProduct).toJson(1);
+                return new SingleProductResponse("Success", "Updated successfully", oldProduct).toJson();
 
             } else {
-                return new CommonResponse("Fail", "Missing fields", "Missing ID field").toJson(0);
+                return new SingleProductResponse("Fail", "Missing id field",null).toJson();
             }
 
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing id, name, category, sex, price and ageCategory fields").toJson(0);
+            return new SingleProductResponse("Fail","Missing id, name, category, sex, price and ageCategory fields",null).toJson();
         }
     }
 
@@ -205,26 +204,26 @@ public class ApiController {
             if (paramMap.get("id") != null) {
                 Product oldProduct = productRepository.findProductById((UUID.fromString(paramMap.get("id"))));
                 if (oldProduct == null) {
-                    return new CommonResponse("Fail", "No such product", "Product with provided ID does not exist").toJson(0);
+                    return new SingleProductResponse("Fail", "Product with provided id does not exist",null).toJson();
                 }
                 if (paramMap.get("salePrice") != null) {
                     double salePrice = Double.parseDouble(paramMap.get("salePrice"));
                     if (salePrice >= oldProduct.getPrice()) {
-                        return new CommonResponse("Fail", "Error", "Sale price must be less than old price").toJson(0);
+                        return new SingleProductResponse("Fail", "Sale price must be less than old price",null).toJson();
                     }
                     oldProduct.setOnSale(true);
                     oldProduct.setSalePrice(salePrice);
                     productRepository.save(oldProduct);
-                    return new SingleProductResponse("Success", "Product is now on sale", oldProduct).toJson(1);
+                    return new SingleProductResponse("Success", "Product is now on sale", oldProduct).toJson();
                 } else {
-                    return new CommonResponse("Fail", "Missing fields", "Missing salePrice field").toJson(0);
+                    return new SingleProductResponse("Fail","Missing salePrice field",null).toJson();
                 }
 
             } else {
-                return new CommonResponse("Fail", "Missing fields", "Missing ID field").toJson(0);
+                return new SingleProductResponse("Fail", "Missing id field",null).toJson();
             }
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing id, oldPrice fields").toJson(0);
+            return new SingleProductResponse("Fail", "Missing id, oldPrice fields",null).toJson();
         }
     }
 
@@ -233,7 +232,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> findSales(@RequestParam Map<String, String> paramMap) throws Exception {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'pageIndex'", "").toJson(0);
+            return new SingleProductResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
         }
         if (paramMap.get("pageIndex") != null) {
             int index = Integer.parseInt(paramMap.get("pageIndex"));
@@ -251,9 +250,9 @@ public class ApiController {
                 }
             });
             ProductResponse response = new MultipleProductResponse("Success", "Products list", result);
-            return response.toJson(1);
+            return response.toJson();
         }
-        return new CommonResponse("Fail", "Missing value of 'pageIndex'", "").toJson(0);
+        return new SingleProductResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
     }
 
     // compress the image bytes before storing it in the database

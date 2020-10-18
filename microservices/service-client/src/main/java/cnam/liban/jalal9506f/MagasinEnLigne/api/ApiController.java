@@ -9,7 +9,7 @@ import cnam.liban.jalal9506f.MagasinEnLigne.database.ClientRepository;
 import java.util.List;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.Client;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.ClientResponse;
-import cnam.liban.jalal9506f.MagasinEnLigne.models.CommonResponse;
+import cnam.liban.jalal9506f.MagasinEnLigne.models.SingleClientResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.MultipleClientResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.SingleClientResponse;
 import java.util.ArrayList;
@@ -38,32 +38,32 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveClient(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing fullName, password, phoneNumber and address fields").toJson(0);
+            return new SingleClientResponse("Fail", "Missing fullName, password, phoneNumber and address fields", null).toJson();
         }
         Client newClient = new Client();
         if (map.get("fullName") == null) {
-            return new CommonResponse("Fail", "Missing field fullName", "fullName is required").toJson(0);
+            return new SingleClientResponse("Fail", "Missing field fullName", null).toJson();
         } else {
             newClient.setFullName(map.get("fullName"));
         }
         if (map.get("password") == null) {
-            return new CommonResponse("Fail", "Missing field password", "password is required").toJson(0);
+            return new SingleClientResponse("Fail", "Missing field password", null).toJson();
         } else {
             newClient.setPassword(map.get("password"));
         }
         if (map.get("phoneNumber") == null) {
-            return new CommonResponse("Fail", "Missing field phoneNumber", "phoneNumber is required").toJson(0);
+            return new SingleClientResponse("Fail", "Missing field phoneNumber", null).toJson();
         } else {
             newClient.setPhoneNumber(map.get("phoneNumber"));
         }
         if (map.get("address") == null) {
-            return new CommonResponse("Fail", "Missing field address", "address is required").toJson(0);
+            return new SingleClientResponse("Fail", "Missing field address", null).toJson();
         } else {
             newClient.setAddress(map.get("address"));
         }
         clientRepository.save(newClient);
         ClientResponse response = new SingleClientResponse("Success", "Client created successfully", newClient);
-        return response.toJson(1);
+        return response.toJson();
     }
 
     @RequestMapping(value = "/getClients", method = RequestMethod.POST,
@@ -71,7 +71,7 @@ public class ApiController {
     public ResponseEntity<Object> getClients() {
         List<Client> list = clientRepository.findAll();
         ClientResponse response = new MultipleClientResponse("Success", "Clients list", list);
-        return response.toJson(1);
+        return response.toJson();
     }
 
     @RequestMapping(value = "/findClient", method = RequestMethod.POST,
@@ -79,7 +79,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> findClient(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'name'", null).toJson();
         }
         if (paramMap.get("name") != null) {
             String name = paramMap.get("name");
@@ -89,9 +89,9 @@ public class ApiController {
                 result.add(c);
             });
             ClientResponse response = new MultipleClientResponse("Success", result.size() + " Clients found", result);
-            return response.toJson(1);
+            return response.toJson();
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'name'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'name'", null).toJson();
         }
 
     }
@@ -101,7 +101,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> login(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'phoneNumber' and 'password'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'phoneNumber' and 'password'", null).toJson();
         }
         if (paramMap.get("phoneNumber") != null) {
             String phoneNumber = paramMap.get("phoneNumber");
@@ -111,19 +111,19 @@ public class ApiController {
                     String password = paramMap.get("password");
                     if (password.equals(client.getPassword())) {
                         // password matches.. login accepted
-                        return new SingleClientResponse("Success", "Login accepted", client).toJson(1);
+                        return new SingleClientResponse("Success", "Login accepted", client).toJson();
                     } else {
                         // password does not match.. login refused
-                        return new CommonResponse("Fail", "Login failed: Password does not match", "").toJson(0);
+                        return new SingleClientResponse("Fail", "Login failed Password does not match", null).toJson();
                     }
                 } else {
-                    return new CommonResponse("Fail", "Missing parameters 'password'", "").toJson(0);
+                    return new SingleClientResponse("Fail", "Missing parameters 'password'", null).toJson();
                 }
             } else {
-                return new CommonResponse("Fail", "Login failed: No Client found", "").toJson(0);
+                return new SingleClientResponse("Fail", "Login failed: No Client found", null).toJson();
             }
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'phoneNumber'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'phoneNumber'", null).toJson();
         }
 
     }
@@ -133,18 +133,18 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> checkIn(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
         if (paramMap.get("id") != null) {
             String id = paramMap.get("id");
             Client client = clientRepository.findClientById(UUID.fromString(id));
             if (client != null) {
-                return new SingleClientResponse("Success", "Client found", client).toJson(1);
+                return new SingleClientResponse("Success", "Client found", client).toJson();
             } else {
-                return new CommonResponse("Fail", "No Client", "Wrong id").toJson(0);
+                return new SingleClientResponse("Fail", "No Client: Wrong id", null).toJson();
             }
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
 
     }
@@ -154,17 +154,17 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> delete(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
         if (paramMap.get("id") != null) {
             Client client = clientRepository.findClientById(UUID.fromString(paramMap.get("id")));
             if (client != null) {
                 clientRepository.delete(client);
-                return new CommonResponse("Success", "Deleted successfully", "").toJson(1);
+                return new SingleClientResponse("Success", "Deleted successfully", null).toJson();
             }
-            return new CommonResponse("Fail", "No client", "Client with provided ID does not exist").toJson(0);
+            return new SingleClientResponse("Fail", "Client with provided ID does not exist", null).toJson();
         } else {
-            return new CommonResponse("Fail", "Missing parameters 'id'", "").toJson(0);
+            return new SingleClientResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
 
     }
@@ -178,7 +178,7 @@ public class ApiController {
             if (paramMap.get("id") != null) {
                 Client oldClient = clientRepository.findClientById((UUID.fromString(paramMap.get("id"))));
                 if (oldClient == null) {
-                    return new CommonResponse("Fail", "No such client", "Client with provided ID does not exist").toJson(0);
+                    return new SingleClientResponse("Fail", "Client with provided ID does not exist", null).toJson();
                 }
                 if (paramMap.get("fullName") != null) {
                     oldClient.setFullName(paramMap.get("fullName"));
@@ -196,14 +196,14 @@ public class ApiController {
                     oldClient.setAddress(paramMap.get("address"));
                 }
                 clientRepository.save(oldClient);
-                return new SingleClientResponse("Success", "Updated successfully", oldClient).toJson(1);
+                return new SingleClientResponse("Success", "Updated successfully", oldClient).toJson();
 
             } else {
-                return new CommonResponse("Fail", "Missing fields", "Missing ID field").toJson(0);
+                return new SingleClientResponse("Fail", "Missing fields: id", null).toJson();
             }
 
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing id, fullName, password, phoneNumber and address fields").toJson(0);
+            return new SingleClientResponse("Fail", "Missing id, fullName, password, phoneNumber and address fields", null).toJson();
         }
     }
 

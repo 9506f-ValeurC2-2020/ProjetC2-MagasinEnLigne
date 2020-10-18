@@ -34,13 +34,7 @@ public class SingleClientResponse extends ClientResponse {
     }
 
     @Override
-    public ResponseEntity<Object> toJson(int status) {
-        HttpStatus httpStatus;
-        if (status == 0) {
-            httpStatus = HttpStatus.BAD_REQUEST;
-        } else {
-            httpStatus = HttpStatus.OK;
-        }
+    public ResponseEntity<Object> toJson() {
         JSONObject jResponse = new JSONObject();
         jResponse.put("Status", getStatus());
         jResponse.put("Message", getMessage());
@@ -48,7 +42,7 @@ public class SingleClientResponse extends ClientResponse {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        return new ResponseEntity<>(jResponse, httpHeaders, httpStatus);
+        return new ResponseEntity<>(jResponse, httpHeaders, HttpStatus.OK);
     }
 
 }

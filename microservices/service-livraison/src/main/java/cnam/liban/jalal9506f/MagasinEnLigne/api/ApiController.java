@@ -6,7 +6,6 @@
 package cnam.liban.jalal9506f.MagasinEnLigne.api;
 
 import cnam.liban.jalal9506f.MagasinEnLigne.database.ItemRepository;
-import cnam.liban.jalal9506f.MagasinEnLigne.models.CommonResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.Item;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.ItemResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.MultipleItemResponse;
@@ -38,17 +37,17 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveItem(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing field: 'orderId'").toJson(0);
+            return new SingleItemResponse("Fail", "Missing field: 'orderId'", null).toJson();
         }
         Item newItem = new Item();
         if (map.get("orderId") == null) {
-            return new CommonResponse("Fail", "Missing fields", "Missing field: 'orderId'").toJson(0);
+            return new SingleItemResponse("Fail", "Missing field: 'orderId'", null).toJson();
         } else {
             newItem.setOrderId(UUID.fromString(map.get("orderId")));
         }
         itemRepository.save(newItem);
         ItemResponse response = new SingleItemResponse("Success", "Item created successfully", newItem);
-        return response.toJson(1);
+        return response.toJson();
     }
 
     @RequestMapping(value = "/getItems", method = RequestMethod.POST,
@@ -56,7 +55,7 @@ public class ApiController {
     public ResponseEntity<Object> getItems() {
         List<Item> list = itemRepository.findAll();
         ItemResponse response = new MultipleItemResponse("Success", "Items list", list);
-        return response.toJson(1);
+        return response.toJson();
     }
 
     @RequestMapping(value = "/findItem", method = RequestMethod.POST,
@@ -64,7 +63,7 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> findItem(@RequestParam Map<String, String> paramMap) {
         if (paramMap == null || paramMap.isEmpty()) {
-            return new CommonResponse("Fail", "Missing fields", "Missing field: 'status'").toJson(0);
+            return new SingleItemResponse("Fail", "Missing field: 'status'", null).toJson();
         }
         if (paramMap.get("status") != null) {
             int status = Integer.parseInt(paramMap.get("status"));
@@ -74,9 +73,9 @@ public class ApiController {
                 result.add(item);
             });
             ItemResponse response = new MultipleItemResponse("Success", result.size() + " Items found", result);
-            return response.toJson(1);
+            return response.toJson();
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing field: 'status'").toJson(0);
+            return new SingleItemResponse("Fail", "Missing field: 'status'", null).toJson();
         }
 
     }
@@ -90,18 +89,18 @@ public class ApiController {
             if (paramMap.get("id") != null) {
                 Item oldItem = itemRepository.findItemById((UUID.fromString(paramMap.get("id"))));
                 if (oldItem == null) {
-                    return new CommonResponse("Fail", "No such item", "Item with provided ID does not exist").toJson(0);
+                    return new SingleItemResponse("Fail", "Item with provided ID does not exist", null).toJson();
                 }
                 oldItem.setStatus(1);
                 itemRepository.save(oldItem);
-                return new SingleItemResponse("Success", "Updated successfully", oldItem).toJson(1);
+                return new SingleItemResponse("Success", "Updated successfully", oldItem).toJson();
 
             } else {
-                return new CommonResponse("Fail", "Missing fields", "Missing field: 'id'").toJson(0);
+                return new SingleItemResponse("Fail", "Missing field: 'id'", null).toJson();
             }
 
         } else {
-            return new CommonResponse("Fail", "Missing fields", "Missing field: 'id'").toJson(0);
+            return new SingleItemResponse("Fail", "Missing field: 'id'", null).toJson();
         }
     }
 }

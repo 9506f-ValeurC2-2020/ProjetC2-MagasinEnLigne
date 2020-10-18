@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cnam.magasinenligne.R
-import com.cnam.magasinenligne.models.Product
+import com.cnam.magasinenligne.api.models.Product
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_shop.view.*
 

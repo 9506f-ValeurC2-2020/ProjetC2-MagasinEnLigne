@@ -153,20 +153,24 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
                     et_password.error = getString(R.string.required_field_error)
                     iv_password_ok.hide()
                 } else {
-                    val code = validatePassword(password)
-                    if (code != 0) {
-                        et_password.error = getErrorMessage(code)
-                        iv_password_ok.hide()
-                    } else {
-                        iv_password_ok.show()
-                        if (et_confirm_password.text.toString() == password) {
-                            et_confirm_password.error = null
-                            iv_confirm_password_ok.show()
+                    if (!cb_already_have_account.isChecked) {
+                        val code = validatePassword(password)
+                        if (code != 0) {
+                            et_password.error = getErrorMessage(code)
+                            iv_password_ok.hide()
                         } else {
-                            et_confirm_password.error = getString(R.string.password_not_match_error)
-                            iv_confirm_password_ok.hide()
+                            iv_password_ok.show()
+                            if (et_confirm_password.text.toString() == password) {
+                                et_confirm_password.error = null
+                                iv_confirm_password_ok.show()
+                            } else {
+                                et_confirm_password.error =
+                                    getString(R.string.password_not_match_error)
+                                iv_confirm_password_ok.hide()
+                            }
                         }
                     }
+
                 }
             }
         }
@@ -357,7 +361,6 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         } else {
             et_phone.error = null
         }
-
         myActivity.startLoading()
         registerClicked = true
         val fields = hashMapOf(

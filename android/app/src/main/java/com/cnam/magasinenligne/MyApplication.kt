@@ -16,6 +16,8 @@ class MyApplication : MultiDexApplication() {
         var errorTimeLeft = 0L
         lateinit var clientProfile: Client
         lateinit var merchantProfile: Vendeur
+        fun isClient() = this::clientProfile.isInitialized
+        fun isMerchant() = this::merchantProfile.isInitialized
     }
 
     @SuppressLint("CommitPrefEdits")

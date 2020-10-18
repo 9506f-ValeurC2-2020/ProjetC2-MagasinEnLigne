@@ -8,6 +8,8 @@ data class Product(
     @SerializedName("category") val category: String = "",
     @SerializedName("sex") val sex: Int = -1, // 0 male 1 female -1 unspecified
     @SerializedName("price") val price: Double = 0.0,
+    @SerializedName("onSale") val onSale: Boolean = false,
+    @SerializedName("salePrice") val salePrice: Double = 0.0,
     @SerializedName("ageCategory") val ageCategory: String = "",
     @SerializedName("image") val image: String? = null
 )

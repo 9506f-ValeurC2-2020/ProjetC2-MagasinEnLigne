@@ -107,7 +107,7 @@ class AdminRegistrationFragment : BaseFragment() {
     }
 
     override fun onBackStackChanged() {
-        TODO("Not yet implemented")
+        logDebug("onBackStack")
     }
 
     private fun countDownError(timeInMilli: Long): CountDownTimer {

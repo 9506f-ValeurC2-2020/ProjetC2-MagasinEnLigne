@@ -33,16 +33,18 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.25"
         app:lottie_autoPlay="true"
-        app:lottie_colorFilter="@color/colorAccent"
-        app:lottie_fileName="splash_loader_1.json"
+        app:lottie_colorFilter="@color/colorPrimary"
+        app:lottie_fileName="loading.json"
         app:lottie_imageAssetsFolder="assets"
         app:lottie_loop="true" />
 

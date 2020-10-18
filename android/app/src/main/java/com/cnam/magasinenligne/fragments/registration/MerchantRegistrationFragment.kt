@@ -10,7 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.RegistrationActivity
 import com.cnam.magasinenligne.api.*
-import com.cnam.magasinenligne.api.models.SingleClientResponse
+import com.cnam.magasinenligne.api.models.SingleVendeurResponse
 import com.cnam.magasinenligne.api.models.Vendeur
 import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.utils.*
@@ -281,11 +281,11 @@ class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
                         PASSWORD to et_password.text.toString()
                     )
                     val registerCallback =
-                        ApiCallback<SingleClientResponse>(
+                        ApiCallback<SingleVendeurResponse>(
                             from_flag = "from_merchant_register",
                             listener = this
                         )
-                    AppRetrofitClient.buildService(1).saveClient(fields).enqueue(registerCallback)
+                    AppRetrofitClient.buildService(2).saveVendeur(fields).enqueue(registerCallback)
                     verify_popup.hide()
                 } else {
                     // Sign in failed, display a message and update the UI
@@ -324,8 +324,8 @@ class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
             PASSWORD to password
         )
         val registerCallback =
-            ApiCallback<SingleClientResponse>(from_flag = "from_merchant_login", listener = this)
-        AppRetrofitClient.buildService(1).loginClient(fields).enqueue(registerCallback)
+            ApiCallback<SingleVendeurResponse>(from_flag = "from_merchant_login", listener = this)
+        AppRetrofitClient.buildService(2).loginVendeur(fields).enqueue(registerCallback)
     }
 
     private fun getErrorMessage(code: Int): String? {
@@ -345,7 +345,7 @@ class MerchantRegistrationFragment : BaseFragment(), RetrofitResponseListener {
     }
 
     override fun onBackStackChanged() {
-        TODO("Not yet implemented")
+        logDebug("onBackStack")
     }
 
     override fun onSuccess(result: Any, from: String) {

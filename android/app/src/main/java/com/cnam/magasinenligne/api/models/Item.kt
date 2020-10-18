@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class Item(
     @SerializedName("id") val id: String = "",
-    @SerializedName("order id") val orderId: String = "",
+    @SerializedName("orderId") val orderId: String = "",
     @SerializedName("status") val status: String = "",
-    @SerializedName("delivery charges") val charges: Float = 0f
+    @SerializedName("deliveryCharges") val charges: Float = 0f
 )
 
 data class SingleItemResponse(

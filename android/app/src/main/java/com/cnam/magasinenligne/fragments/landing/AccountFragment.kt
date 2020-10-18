@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.fragments.BaseFragment
+import com.cnam.magasinenligne.utils.logDebug
 
 class AccountFragment : BaseFragment() {
 
@@ -40,6 +41,6 @@ class AccountFragment : BaseFragment() {
     }
 
     override fun onBackStackChanged() {
-        TODO("Not yet implemented")
+        logDebug("onBackStack")
     }
 }

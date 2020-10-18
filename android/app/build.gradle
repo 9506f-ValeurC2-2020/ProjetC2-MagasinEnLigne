@@ -73,19 +73,19 @@ dependencies {
     implementation group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.12.6'
 
     /**
-    * picasso
-    */
+     * picasso
+     */
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     /**
-    * room
-    */
+     * room
+     */
     def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     /**
-    * lottie
+     * lottie
      */
     implementation "com.airbnb.android:lottie:3.4.1"
 

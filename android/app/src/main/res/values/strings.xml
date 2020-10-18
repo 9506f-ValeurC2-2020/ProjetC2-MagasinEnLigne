@@ -65,6 +65,11 @@
     <string name="all_clients">All clients</string>
     <string name="send_broadcast">Send a broadcast for your favorite customers</string>
     <string name="home_shopping">Home Shopping</string>
+    <string name="address_1">address: $1%s</string>
+    <string name="email">email: $1%s</string>
+    <string name="phone_number_1">phone number: $1%s</string>
+    <string name="name_1">name: $1%s</string>
+    <string name="id">id: $1%s</string>
 
     <array name="categories">
         <item>all</item>

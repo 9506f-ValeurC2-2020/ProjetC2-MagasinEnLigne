@@ -55,13 +55,13 @@ class LandingActivity : AppCompatActivity() {
 
     fun startLoading() {
         loader.show()
-        cl_mask.lockView(true)
     }
 
     fun stopLoading() {
         loader.hide()
-        cl_mask.lockView(false)
     }
+
+    fun lockView(lock: Boolean) = cl_mask.lockView(lock)
 
     fun addOnBackStackListener(baseFragment: BaseFragment) {
         supportFragmentManager.addOnBackStackChangedListener(baseFragment)

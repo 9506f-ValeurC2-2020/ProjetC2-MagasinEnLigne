@@ -15,6 +15,7 @@ import com.cnam.magasinenligne.api.models.SingleClientResponse
 import com.cnam.magasinenligne.api.models.SingleVendeurResponse
 import com.cnam.magasinenligne.api.models.Vendeur
 import com.cnam.magasinenligne.utils.findPreference
+import com.cnam.magasinenligne.utils.logDebug
 import com.cnam.magasinenligne.utils.showSnack
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -22,7 +23,9 @@ class SplashActivity : AppCompatActivity(), RetrofitResponseListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        Handler(Looper.getMainLooper()).postDelayed({}, 2000)
+        Handler(Looper.getMainLooper()).postDelayed({
+            checkLogin()
+        }, 2000)
     }
 
     private fun checkLogin() {
@@ -43,8 +46,7 @@ class SplashActivity : AppCompatActivity(), RetrofitResponseListener {
     private fun handleUserType(type: String) {
         when (type) {
             "admin" -> {
-                startActivity(Intent(this, LandingActivity::class.java))
-                finish()
+                goToLanding()
             }
             "client" -> checkIn(0)
             "merchant" -> checkIn(1)
@@ -55,6 +57,7 @@ class SplashActivity : AppCompatActivity(), RetrofitResponseListener {
         val fields = hashMapOf(
             ID to findPreference(userId, "")
         )
+        logDebug(fields.toString())
         if (type == 0) {
             val checkInCallback =
                 ApiCallback<SingleClientResponse>(
@@ -81,9 +84,15 @@ class SplashActivity : AppCompatActivity(), RetrofitResponseListener {
                 MyApplication.merchantProfile = result as Vendeur
             }
         }
+        goToLanding()
     }
 
     override fun onFailure(error: String) {
         lottie_loader.showSnack(error)
+    }
+
+    private fun goToLanding() {
+        startActivity(Intent(this, LandingActivity::class.java))
+        finish()
     }
 }

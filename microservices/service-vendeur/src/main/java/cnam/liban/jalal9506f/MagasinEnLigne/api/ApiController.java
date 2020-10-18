@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,21 +41,21 @@ public class ApiController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> saveVendeur(@RequestParam Map<String, String> map) throws Exception {
         if (map == null) {
-            return new SingleVendeurResponse("Fail", "Missing fullName, password, phoneNumber fields",null).toJson();
+            return new SingleVendeurResponse("Fail", "Missing fullName, password, phoneNumber fields", null).toJson();
         }
         Vendeur newVendeur = new Vendeur();
         if (map.get("fullName") == null) {
-            return new SingleVendeurResponse("Fail","fullName is required",null).toJson();
+            return new SingleVendeurResponse("Fail", "fullName is required", null).toJson();
         } else {
             newVendeur.setFullName(map.get("fullName"));
         }
         if (map.get("password") == null) {
-            return new SingleVendeurResponse("Fail", "password is required",null).toJson();
+            return new SingleVendeurResponse("Fail", "password is required", null).toJson();
         } else {
             newVendeur.setPassword(map.get("password"));
         }
         if (map.get("phoneNumber") == null) {
-            return new SingleVendeurResponse("Fail", "phoneNumber is required",null).toJson();
+            return new SingleVendeurResponse("Fail", "phoneNumber is required", null).toJson();
         } else {
             newVendeur.setPhoneNumber(map.get("phoneNumber"));
         }
@@ -62,11 +65,25 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/getVendeurs", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getVendeurs() {
-        List<Vendeur> list = vendeurRepository.findAll();
-        VendeurResponse response = new MultipleVendeurResponse("Success", "vendeurs list", list);
-        return response.toJson();
+    public ResponseEntity<Object> getVendeurs(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new SingleVendeurResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
+        }
+        if (paramMap.get("pageIndex") != null) {
+            int index = Integer.parseInt(paramMap.get("pageIndex"));
+            Pageable paging = PageRequest.of(index, 20);
+            Page<Vendeur> pagedResult = vendeurRepository.findAll(paging);
+            List<Vendeur> page = pagedResult.toList();
+            List<Vendeur> result = new ArrayList<>();
+            page.stream().forEachOrdered(c -> {
+                result.add(c);
+            });
+            VendeurResponse response = new MultipleVendeurResponse("Success", "Merchants list", result);
+            return response.toJson();
+        }
+        return new SingleVendeurResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
     }
 
     @RequestMapping(value = "/findVendeur", method = RequestMethod.POST,
@@ -136,7 +153,7 @@ public class ApiController {
             if (vendeur != null) {
                 return new SingleVendeurResponse("Success", "Vendeur found", vendeur).toJson();
             } else {
-                return new SingleVendeurResponse("Fail", "Vendeur with provided ID does not exist",null).toJson();
+                return new SingleVendeurResponse("Fail", "Vendeur with provided ID does not exist", null).toJson();
             }
         } else {
             return new SingleVendeurResponse("Fail", "Missing parameters 'id'", null).toJson();
@@ -157,7 +174,7 @@ public class ApiController {
                 vendeurRepository.delete(vendeur);
                 return new SingleVendeurResponse("Success", "Deleted successfully", null).toJson();
             }
-            return new SingleVendeurResponse("Fail", "Vendeur with provided ID does not exist",null).toJson();
+            return new SingleVendeurResponse("Fail", "Vendeur with provided ID does not exist", null).toJson();
         } else {
             return new SingleVendeurResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
@@ -173,7 +190,7 @@ public class ApiController {
             if (paramMap.get("id") != null) {
                 Vendeur oldVendeur = vendeurRepository.findVendeurById((UUID.fromString(paramMap.get("id"))));
                 if (oldVendeur == null) {
-                    return new SingleVendeurResponse("Fail","Vendeur with provided ID does not exist",null).toJson();
+                    return new SingleVendeurResponse("Fail", "Vendeur with provided ID does not exist", null).toJson();
                 }
                 if (paramMap.get("fullName") != null) {
                     oldVendeur.setFullName(paramMap.get("fullName"));
@@ -191,11 +208,11 @@ public class ApiController {
                 return new SingleVendeurResponse("Success", "Updated successfully", oldVendeur).toJson();
 
             } else {
-                return new SingleVendeurResponse("Fail", "Missing id field",null).toJson();
+                return new SingleVendeurResponse("Fail", "Missing id field", null).toJson();
             }
 
         } else {
-            return new SingleVendeurResponse("Fail", "Missing id, fullName, password, phoneNumber fields",null).toJson();
+            return new SingleVendeurResponse("Fail", "Missing id, fullName, password, phoneNumber fields", null).toJson();
         }
     }
 }

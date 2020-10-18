@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,11 +54,25 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/getItems", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getItems() {
-        List<Item> list = itemRepository.findAll();
-        ItemResponse response = new MultipleItemResponse("Success", "Items list", list);
-        return response.toJson();
+    public ResponseEntity<Object> getItems(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new SingleItemResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
+        }
+        if (paramMap.get("pageIndex") != null) {
+            int index = Integer.parseInt(paramMap.get("pageIndex"));
+            Pageable paging = PageRequest.of(index, 20);
+            Page<Item> pagedResult = itemRepository.findAll(paging);
+            List<Item> page = pagedResult.toList();
+            List<Item> result = new ArrayList<>();
+            page.stream().forEachOrdered(c -> {
+                result.add(c);
+            });
+            ItemResponse response = new MultipleItemResponse("Success", "Items list", result);
+            return response.toJson();
+        }
+        return new SingleItemResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
     }
 
     @RequestMapping(value = "/findItem", method = RequestMethod.POST,

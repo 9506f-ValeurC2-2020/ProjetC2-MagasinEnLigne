@@ -9,13 +9,15 @@ import cnam.liban.jalal9506f.MagasinEnLigne.database.ClientRepository;
 import java.util.List;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.Client;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.ClientResponse;
-import cnam.liban.jalal9506f.MagasinEnLigne.models.SingleClientResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.MultipleClientResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.SingleClientResponse;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,11 +69,25 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/getClients", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> getClients() {
-        List<Client> list = clientRepository.findAll();
-        ClientResponse response = new MultipleClientResponse("Success", "Clients list", list);
-        return response.toJson();
+    public ResponseEntity<Object> getClients(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new SingleClientResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
+        }
+        if (paramMap.get("pageIndex") != null) {
+            int index = Integer.parseInt(paramMap.get("pageIndex"));
+            Pageable paging = PageRequest.of(index, 20);
+            Page<Client> pagedResult = clientRepository.findAll(paging);
+            List<Client> page = pagedResult.toList();
+            List<Client> result = new ArrayList<>();
+            page.stream().forEachOrdered(c -> {
+                result.add(c);
+            });
+            ClientResponse response = new MultipleClientResponse("Success", "Clients list", result);
+            return response.toJson();
+        }
+        return new SingleClientResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
     }
 
     @RequestMapping(value = "/findClient", method = RequestMethod.POST,

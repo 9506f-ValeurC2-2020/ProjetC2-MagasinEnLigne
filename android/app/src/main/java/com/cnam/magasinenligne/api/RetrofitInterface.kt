@@ -8,8 +8,9 @@ import retrofit2.http.*
 
 interface RetrofitInterface {
     //<editor-fold desc="client">
+    @FormUrlEncoded
     @POST("/getClients")
-    fun getClients(): Call<MultipleClientResponse>
+    fun getClients(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleClientResponse>
 
     @FormUrlEncoded
     @POST("/save")
@@ -38,8 +39,9 @@ interface RetrofitInterface {
 
 
     //<editor-fold desc="vendeur">
+    @FormUrlEncoded
     @POST("/getVendeurs")
-    fun getVendeurs(): Call<MultipleVendeurResponse>
+    fun getVendeurs(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleVendeurResponse>
 
     @FormUrlEncoded
     @POST("/save")
@@ -123,8 +125,9 @@ interface RetrofitInterface {
     //</editor-fold>
 
     //<editor-fold desc="delivery">
+    @FormUrlEncoded
     @POST("/getItems")
-    fun getItems(): Call<MultipleItemResponse>
+    fun getItems(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleItemResponse>
 
     @FormUrlEncoded
     @POST("/save")

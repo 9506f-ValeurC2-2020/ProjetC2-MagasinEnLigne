@@ -148,6 +148,9 @@ fun validatePassword(password: String): Int {
 fun getCurrentTimeUsingDate(): String =
     SimpleDateFormat("yyyy-MM-dd HH:mm:ss a", Locale.ROOT).format(Date())
 
+fun getTimeFromLong(milliseconds: Long): String =
+    SimpleDateFormat("yyyy-MM-dd HH:mm:ss a", Locale.ROOT).format(Date(milliseconds))
+
 fun getNowTimeStamp(): String = System.currentTimeMillis().toString()
 
 fun getCountryIsoCode(context: Context): String {

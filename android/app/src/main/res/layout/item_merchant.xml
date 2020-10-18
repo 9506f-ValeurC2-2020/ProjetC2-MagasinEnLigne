@@ -19,6 +19,7 @@
             app:layout_constraintGuide_percent="0.25" />
 
         <ImageView
+            android:id="@+id/iv_merchant"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,6 +28,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_merchant" />
+
+        <TextView
+            android:id="@+id/tv_merchant_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@string/merchant"
+            android:textColor="@color/colorBlue"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="@id/guideline_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_merchant" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"

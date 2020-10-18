@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.LandingActivity
 import com.cnam.magasinenligne.adapters.ProductAdapter
@@ -16,16 +17,22 @@ import com.cnam.magasinenligne.api.RetrofitResponseListener
 import com.cnam.magasinenligne.api.models.MultipleProductResponse
 import com.cnam.magasinenligne.api.models.Product
 import com.cnam.magasinenligne.fragments.BaseFragment
+import com.cnam.magasinenligne.pagination.PaginationListener
+import com.cnam.magasinenligne.pagination.PaginationListener.Companion.PAGE_START
 import com.cnam.magasinenligne.utils.hide
 import com.cnam.magasinenligne.utils.logDebug
 import com.cnam.magasinenligne.utils.show
 import com.cnam.magasinenligne.utils.showSnack
 import kotlinx.android.synthetic.main.fragment_all_products.*
 
-class AllProductsFragment : BaseFragment(), RetrofitResponseListener {
+class AllProductsFragment : BaseFragment(), RetrofitResponseListener,
+    SwipeRefreshLayout.OnRefreshListener {
     private lateinit var myActivity: LandingActivity
     private lateinit var productAdapter: ProductAdapter
     private var products = ArrayList<Product>()
+    private var currentPage = PAGE_START
+    private var isLastPage = false
+    private var isLoading = false
 
     /**
      * OnBackPressedCallback
@@ -50,6 +57,8 @@ class AllProductsFragment : BaseFragment(), RetrofitResponseListener {
         super.onViewCreated(view, savedInstanceState)
         addOnBackPressedCallback(onBackPressedCallback)
         getAllProducts(0)
+        srl_products.setOnRefreshListener(this)
+        srl_products.setProgressBackgroundColorSchemeResource(R.color.colorBlue)
     }
 
 
@@ -74,32 +83,76 @@ class AllProductsFragment : BaseFragment(), RetrofitResponseListener {
                 listener = this
             )
         AppRetrofitClient.buildService(3).getProducts(fields).enqueue(getProductsCallback)
+        if (this::productAdapter.isInitialized && currentPage != PAGE_START) {
+            productAdapter.addLoading()
+            isLoading = true
+        }
     }
 
     private fun initializeRecyclerView() {
         productAdapter = ProductAdapter(products)
         rv_products.adapter = productAdapter
-        rv_products.layoutManager = LinearLayoutManager(myActivity)
+        val mLayoutManager = LinearLayoutManager(myActivity)
+        rv_products.layoutManager = mLayoutManager
+        rv_products.addOnScrollListener(object : PaginationListener(mLayoutManager) {
+            override fun loadMoreItems() {
+                this@AllProductsFragment.isLoading = true
+                currentPage++
+                getAllProducts(currentPage)
+            }
+
+            override val isLastPage: Boolean
+                get() = this@AllProductsFragment.isLastPage
+            override val isLoading: Boolean
+                get() = this@AllProductsFragment.isLoading
+        })
     }
 
     override fun onSuccess(result: Any, from: String) {
-        myActivity.stopLoading()
+        if (this::productAdapter.isInitialized && currentPage != PAGE_START) {
+            productAdapter.removeLoading()
+            isLoading = false
+        }
         myActivity.lockView(false)
+        myActivity.stopLoading()
+        srl_products.isRefreshing = false
         if (result is List<*>) {
             val list = result as List<Product>
-            products = list as ArrayList<Product>
-            if (products.isNotEmpty()) {
-                tv_no_items.hide()
-                initializeRecyclerView()
+            if (!list.isNullOrEmpty()) {
+                if (this::productAdapter.isInitialized && currentPage != PAGE_START) {
+                    productAdapter.addItems(list)
+                } else {
+                    products.addAll(list)
+                    if (products.isNotEmpty()) {
+                        tv_no_items.hide()
+                        initializeRecyclerView()
+                    } else {
+                        tv_no_items.show()
+                    }
+                }
             } else {
-                tv_no_items.show()
+                isLastPage = true
+                if (products.isEmpty()) tv_no_items.show()
             }
         }
     }
 
     override fun onFailure(error: String) {
+        srl_products.isRefreshing = false
         myActivity.stopLoading()
         myActivity.lockView(false)
         rv_products.showSnack(error)
+        if (this::productAdapter.isInitialized && currentPage != PAGE_START) {
+            productAdapter.removeLoading()
+            isLoading = false
+        }
+    }
+
+    override fun onRefresh() {
+        currentPage = PAGE_START
+        isLastPage = false
+        if (this::productAdapter.isInitialized)
+            productAdapter.clear()
+        getAllProducts(currentPage)
     }
 }

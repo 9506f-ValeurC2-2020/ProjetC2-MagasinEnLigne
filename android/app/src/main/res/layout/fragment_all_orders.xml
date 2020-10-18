@@ -5,16 +5,25 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_orders"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_orders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_orders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/tv_no_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Orders"
+        android:text="@string/no_orders"
         android:textColor="@color/colorPrimary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

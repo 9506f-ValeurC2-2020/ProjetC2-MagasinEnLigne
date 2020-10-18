@@ -7,7 +7,7 @@ data class Vendeur(
     @SerializedName("fullName") val fullName: String = "",
     @SerializedName("password") val password: String = "",
     @SerializedName("phoneNumber") val phoneNumber: String = "",
-    @SerializedName("email") val email: String = ""
+    @SerializedName("email") val email: String? = ""
 )
 
 data class SingleVendeurResponse(

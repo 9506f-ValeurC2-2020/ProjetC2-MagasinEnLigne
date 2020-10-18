@@ -181,8 +181,11 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun onBackStackChanged() {
-        logDebug("onBackStack")
-        resetClicks()
+        if (myActivity.supportFragmentManager.backStackEntryCount <= 1) {
+            logDebug("onBackStack")
+            resetClicks()
+        }
+
     }
 
     private fun resetClicks() {

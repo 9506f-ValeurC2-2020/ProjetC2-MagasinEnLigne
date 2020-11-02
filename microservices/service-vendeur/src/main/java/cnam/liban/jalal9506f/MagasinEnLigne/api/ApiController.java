@@ -85,8 +85,9 @@ public class ApiController {
             List<Vendeur> result = new ArrayList<>();
             page.stream().forEachOrdered(c -> {
                 Vendeur p = c;
-                if (c.getImage() != null) {
-                    p.setImage(decompressImage(c.getImage()));
+                var image = c.getImage();
+                if (image != null && image.length > 0) {
+                    p.setImage(decompressImage(image));
                 }
                 result.add(p);
             });
@@ -109,8 +110,9 @@ public class ApiController {
             List<Vendeur> result = new ArrayList<>();
             all.stream().filter(c -> (c.getFullName().startsWith(name))).forEachOrdered(c -> {
                 Vendeur p = c;
-                if (c.getImage() != null) {
-                    p.setImage(decompressImage(c.getImage()));
+                var image = c.getImage();
+                if (image != null && image.length > 0) {
+                    p.setImage(decompressImage(image));
                 }
                 result.add(p);
             });
@@ -133,8 +135,9 @@ public class ApiController {
             String phoneNumber = paramMap.get("phoneNumber");
             Vendeur vendeur = vendeurRepository.findVendeurByPhoneNumber(phoneNumber);
             if (vendeur != null) {
-                if (vendeur.getImage() != null) {
-                    vendeur.setImage(decompressImage(vendeur.getImage()));
+                var image = vendeur.getImage();
+                if (image != null && image.length > 0) {
+                    vendeur.setImage(decompressImage(image));
                 }
                 if (paramMap.get("password") != null) {
                     String password = paramMap.get("password");
@@ -168,8 +171,9 @@ public class ApiController {
             String id = paramMap.get("id");
             Vendeur vendeur = vendeurRepository.findVendeurById(UUID.fromString(id));
             if (vendeur != null) {
-                if (vendeur.getImage() != null) {
-                    vendeur.setImage(decompressImage(vendeur.getImage()));
+                var image = vendeur.getImage();
+                if (image != null && image.length > 0) {
+                    vendeur.setImage(decompressImage(image));
                 }
                 return new SingleVendeurResponse("Success", "Vendeur found", vendeur).toJson();
             } else {
@@ -212,7 +216,7 @@ public class ApiController {
                 if (oldVendeur == null) {
                     return new SingleVendeurResponse("Fail", "Vendeur with provided ID does not exist", null).toJson();
                 }
-                if (oldVendeur.getImage() != null) {
+                if (oldVendeur.getImage() != null && oldVendeur.getImage().length > 0) {
                     oldVendeur.setImage(decompressImage(oldVendeur.getImage()));
                 }
                 if (paramMap.get("fullName") != null) {
@@ -256,7 +260,7 @@ public class ApiController {
                     oldVendeur.setImage(null);
                 }
                 vendeurRepository.save(oldVendeur);
-                if (oldVendeur.getImage() != null) {
+                if (oldVendeur.getImage() != null && oldVendeur.getImage().length > 0) {
                     oldVendeur.setImage(decompressImage(oldVendeur.getImage()));
                 }
                 return new SingleVendeurResponse("Success", "Updated successfully", oldVendeur).toJson();

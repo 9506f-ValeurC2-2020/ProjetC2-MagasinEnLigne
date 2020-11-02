@@ -113,7 +113,7 @@ public class ApiController {
             List<Product> result = new ArrayList<>();
             page.stream().forEachOrdered(c -> {
                 Product p = c;
-                if (c.getImage() != null) {
+                if (c.getImage() != null && c.getImage().length > 0) {
                     p.setImage(decompressImage(c.getImage()));
                 }
                 result.add(p);
@@ -137,7 +137,7 @@ public class ApiController {
             List<Product> result = new ArrayList<>();
             all.stream().filter(c -> (c.getName().startsWith(name))).forEachOrdered(c -> {
                 Product p = c;
-                if (c.getImage() != null) {
+                if (c.getImage() != null && c.getImage().length > 0) {
                     p.setImage(decompressImage(c.getImage()));
                 }
                 result.add(p);
@@ -221,6 +221,9 @@ public class ApiController {
                 if (oldProduct == null) {
                     return new SingleProductResponse("Fail", "Product with provided id does not exist", null).toJson();
                 }
+                if (oldProduct.getImage() != null && oldProduct.getImage().length > 0) {
+                    oldProduct.setImage(decompressImage(oldProduct.getImage()));
+                }
                 if (paramMap.get("salePrice") != null) {
                     double salePrice = Double.parseDouble(paramMap.get("salePrice"));
                     if (salePrice >= oldProduct.getPrice()) {
@@ -257,7 +260,7 @@ public class ApiController {
             List<Product> result = new ArrayList<>();
             page.stream().forEachOrdered(c -> {
                 Product p = c;
-                if (c.getImage() != null) {
+                if (c.getImage() != null && c.getImage().length > 0) {
                     p.setImage(decompressImage(c.getImage()));
                 }
                 if (p.isOnSale()) {
@@ -288,7 +291,7 @@ public class ApiController {
             List<Product> result = new ArrayList<>();
             page.stream().filter(o -> (o.getProvidedBy().equals(UUID.fromString(paramMap.get("merchantId"))))).forEachOrdered(o -> {
                 Product p = o;
-                if (o.getImage() != null) {
+                if (o.getImage() != null && o.getImage().length > 0) {
                     p.setImage(decompressImage(o.getImage()));
                 }
                 result.add(o);
@@ -316,11 +319,13 @@ public class ApiController {
             List<Product> page = pagedResult.toList();
             List<Product> result = new ArrayList<>();
             String wishes = paramMap.get("wishes");
+            wishes = wishes.replace("[", "").replace("]", "").replace(" ", "");
             var arrayOfWish = wishes.split(",");
+
             for (String s : arrayOfWish) {
                 var product = productRepository.findProductById(UUID.fromString(s));
                 if (product != null) {
-                    if (product.getImage() != null) {
+                    if (product.getImage() != null && product.getImage().length > 0) {
                         product.setImage(decompressImage(product.getImage()));
                     }
                     result.add(product);

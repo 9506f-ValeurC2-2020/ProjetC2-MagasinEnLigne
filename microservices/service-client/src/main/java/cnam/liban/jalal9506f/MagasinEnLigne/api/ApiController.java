@@ -100,8 +100,9 @@ public class ApiController {
             List<Client> result = new ArrayList<>();
             page.stream().forEachOrdered(c -> {
                 Client p = c;
-                if (c.getImage() != null) {
-                    p.setImage(decompressImage(c.getImage()));
+                var image = c.getImage();
+                if (image != null && image.length > 0) {
+                    p.setImage(decompressImage(image));
                 }
                 result.add(p);
             });
@@ -124,8 +125,9 @@ public class ApiController {
             List<Client> result = new ArrayList<>();
             all.stream().filter(c -> (c.getFullName().startsWith(name))).forEachOrdered(c -> {
                 Client p = c;
-                if (c.getImage() != null) {
-                    p.setImage(decompressImage(c.getImage()));
+                var image = c.getImage();
+                if (image != null && image.length > 0) {
+                    p.setImage(decompressImage(image));
                 }
                 result.add(p);
             });
@@ -148,8 +150,9 @@ public class ApiController {
             String phoneNumber = paramMap.get("phoneNumber");
             Client client = clientRepository.findClientByPhoneNumber(phoneNumber);
             if (client != null) {
-                if (client.getImage() != null) {
-                    client.setImage(decompressImage(client.getImage()));
+                var image = client.getImage();
+                if (image != null && image.length > 0) {
+                    client.setImage(decompressImage(image));
                 }
                 if (paramMap.get("password") != null) {
                     String password = paramMap.get("password");
@@ -183,8 +186,9 @@ public class ApiController {
             String id = paramMap.get("id");
             Client client = clientRepository.findClientById(UUID.fromString(id));
             if (client != null) {
-                if (client.getImage() != null) {
-                    client.setImage(decompressImage(client.getImage()));
+                var image = client.getImage();
+                if (image != null && image.length > 0) {
+                    client.setImage(decompressImage(image));
                 }
                 return new SingleClientResponse("Success", "Client found", client).toJson();
             } else {
@@ -227,8 +231,9 @@ public class ApiController {
                 if (oldClient == null) {
                     return new SingleClientResponse("Fail", "Client with provided ID does not exist", null).toJson();
                 }
-                if (oldClient.getImage() != null) {
-                    oldClient.setImage(decompressImage(oldClient.getImage()));
+                var image = oldClient.getImage();
+                if (image != null && image.length > 0) {
+                    oldClient.setImage(decompressImage(image));
                 }
                 if (paramMap.get("fullName") != null) {
                     oldClient.setFullName(paramMap.get("fullName"));
@@ -276,8 +281,9 @@ public class ApiController {
                 }
 
                 clientRepository.save(oldClient);
-                if (oldClient.getImage() != null) {
-                    oldClient.setImage(decompressImage(oldClient.getImage()));
+                var im = oldClient.getImage();
+                if (im != null && im.length > 0) {
+                    oldClient.setImage(decompressImage(im));
                 }
                 return new SingleClientResponse("Success", "Updated successfully", oldClient).toJson();
 
@@ -300,7 +306,8 @@ public class ApiController {
                 if (oldClient == null) {
                     return new SingleClientResponse("Fail", "Client with provided ID does not exist", null).toJson();
                 }
-                if (oldClient.getImage() != null) {
+                var image = oldClient.getImage();
+                if (image != null && image.length > 0) {
                     oldClient.setImage(decompressImage(oldClient.getImage()));
                 }
                 if (paramMap.get("wishId") != null) {
@@ -333,7 +340,7 @@ public class ApiController {
                 if (oldClient == null) {
                     return new SingleClientResponse("Fail", "Client with provided ID does not exist", null).toJson();
                 }
-                if (oldClient.getImage() != null) {
+                if (oldClient.getImage() != null && oldClient.getImage().length > 0) {
                     oldClient.setImage(decompressImage(oldClient.getImage()));
                 }
                 if (paramMap.get("wishId") != null) {
@@ -367,7 +374,7 @@ public class ApiController {
             String id = paramMap.get("clientId");
             Client client = clientRepository.findClientById(UUID.fromString(id));
             if (client != null) {
-                if (client.getImage() != null) {
+                if (client.getImage() != null&&client.getImage().length>0) {
                     client.setImage(decompressImage(client.getImage()));
                 }
                 ClientResponse response = new SingleClientResponse("Success", "Client found", client);

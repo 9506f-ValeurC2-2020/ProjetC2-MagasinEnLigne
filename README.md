@@ -77,7 +77,9 @@ Les technologies utilisées sont :
 2) ouvrir [chrome inspect](chrome://inspect) puis suivre les étapes illustrées dans l'image ci-dessous
 ![connect_localhost](/images/connect_localhost.jpg)
 3) installer [mongoDbCompass](https://www.mongodb.com/try/download/compass)
-4) intaller l'[apk](/apk/magasinEnLigne.apk)
+4) installer l'[apk](/apk/magasinEnLigne.apk)
+5) démarrer le serveur, premierement magasinEnLigne puis les microservices (client, vendeur, etc...)
+6) commencer l'application
 
 ##### L'application
 il y en a 3 modules: [Admin](#admin), [Client](#client) et [Vendeur](#vendeur)

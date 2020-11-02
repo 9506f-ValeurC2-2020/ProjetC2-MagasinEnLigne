@@ -77,3 +77,15 @@ Les technologies utilisées sont :
 2) ouvrir [chrome inspect](chrome://inspect) puis suivre les étapes illustrées dans l'image ci-dessous
 ![connect_localhost](/images/connect_localhost.jpg)
 3) installer [mongoDbCompass](https://www.mongodb.com/try/download/compass)
+4) intaller l'[apk](/apk/magasinEnLigne.apk)
+
+##### L'application
+il y en a 3 modules: [Admin](#admin), [Client](#client) et [Vendeur](#vendeur)
+
+###### Admin
+pour entrer en mode admin, le pin à entrer est: 30184
+###### Client 
+pour entrer en mode client, il faut s'enregistré avec le numéro du téléphone la premire fois
+###### Vendeur 
+pour entrer en mode vendeur, il faut s'enregistré avec le numéro du téléphone la premire fois
+

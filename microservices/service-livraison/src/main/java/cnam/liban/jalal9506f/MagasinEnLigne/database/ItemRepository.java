@@ -21,7 +21,7 @@ public interface ItemRepository extends MongoRepository<Item, String> {
 
     @Query("{'status':?0}")
     public List<Item> findItemByStatus(int status);
-    
+
     @Query("{'id':?0}")
     public Item findItemById(UUID id);
 

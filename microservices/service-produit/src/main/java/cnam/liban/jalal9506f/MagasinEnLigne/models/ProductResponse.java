@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
  * @author jalal
  */
 public abstract class ProductResponse {
+
     private String status;
     private String message;
 

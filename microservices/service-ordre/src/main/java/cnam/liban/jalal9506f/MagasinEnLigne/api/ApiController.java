@@ -10,9 +10,15 @@ import cnam.liban.jalal9506f.MagasinEnLigne.models.MultipleOrderResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.Order;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.OrderResponse;
 import cnam.liban.jalal9506f.MagasinEnLigne.models.SingleOrderResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -127,6 +133,56 @@ public class ApiController {
             return new SingleOrderResponse("Fail", "Missing parameters 'id'", null).toJson();
         }
 
+    }
+
+    @RequestMapping(value = "/getClientOrders", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getClientOrders(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new SingleOrderResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
+        }
+        if (paramMap.get("clientId") == null) {
+            return new SingleOrderResponse("Fail", "Missing value of 'clientId'", null).toJson();
+        }
+        if (paramMap.get("pageIndex") != null) {
+            int index = Integer.parseInt(paramMap.get("pageIndex"));
+            Pageable paging = PageRequest.of(index, 20);
+            Page<Order> pagedResult = orderRepository.findAll(paging);
+            List<Order> page = pagedResult.toList();
+            List<Order> result = new ArrayList();
+            page.stream().filter(o -> (o.getFromClientId().equals(UUID.fromString(paramMap.get("clientId"))))).forEachOrdered(o -> {
+                result.add(o);
+            });
+            OrderResponse response = new MultipleOrderResponse("Success", "Orders list", result);
+            return response.toJson();
+        }
+        return new SingleOrderResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
+    }
+
+    @RequestMapping(value = "/getMerchantOrders", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> getMerchantOrders(@RequestParam Map<String, String> paramMap) {
+        if (paramMap == null || paramMap.isEmpty()) {
+            return new SingleOrderResponse("Fail", "Missing parameters 'pageIndex'", null).toJson();
+        }
+        if (paramMap.get("merchantId") == null) {
+            return new SingleOrderResponse("Fail", "Missing value of 'merchantId'", null).toJson();
+        }
+        if (paramMap.get("pageIndex") != null) {
+            int index = Integer.parseInt(paramMap.get("pageIndex"));
+            Pageable paging = PageRequest.of(index, 20);
+            Page<Order> pagedResult = orderRepository.findAll(paging);
+            List<Order> page = pagedResult.toList();
+            List<Order> result = new ArrayList();
+            page.stream().filter(o -> (o.getToVendeurId().equals(UUID.fromString(paramMap.get("merchantId"))))).forEachOrdered(o -> {
+                result.add(o);
+            });
+            OrderResponse response = new MultipleOrderResponse("Success", "Orders list", result);
+            return response.toJson();
+        }
+        return new SingleOrderResponse("Fail", "Missing value of 'pageIndex'", null).toJson();
     }
 
 }

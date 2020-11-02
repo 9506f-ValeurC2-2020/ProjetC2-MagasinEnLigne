@@ -36,12 +36,14 @@ public class Product {
     private String ageCategory; // ex: 10-12 for clothes 18-28 ...
     @Field("image")
     private byte[] image;
+    @Field("providedBy")
+    private UUID providedBy;
 
     public Product() {
         this.id = UUID.randomUUID();
     }
 
-    public Product(UUID id, String name, String category, int sex, double price, boolean onSale, double salePrice, String ageCategory, byte[] image) {
+    public Product(UUID id, String name, String category, int sex, double price, boolean onSale, double salePrice, String ageCategory, byte[] image, UUID providedBy) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -51,6 +53,15 @@ public class Product {
         this.salePrice = salePrice;
         this.ageCategory = ageCategory;
         this.image = image;
+        this.providedBy = providedBy;
+    }
+
+    public UUID getProvidedBy() {
+        return providedBy;
+    }
+
+    public void setProvidedBy(UUID providedBy) {
+        this.providedBy = providedBy;
     }
 
     public boolean isOnSale() {

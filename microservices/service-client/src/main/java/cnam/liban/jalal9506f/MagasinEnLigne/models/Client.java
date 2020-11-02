@@ -5,6 +5,7 @@
  */
 package cnam.liban.jalal9506f.MagasinEnLigne.models;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -30,18 +31,43 @@ public class Client {
     private String email;
     @Field("address")
     private String address;
+    @Field("image")
+    private byte[] image;
+    @Field("wishList")
+    private ArrayList<UUID> wishList;
 
     public Client() {
         this.id = UUID.randomUUID();
     }
 
-    public Client(UUID id, String fullName, String password, String phoneNumber, String email, String address) {
+    public Client(UUID id, String fullName, String password, String phoneNumber, String email, String address, byte[] image, ArrayList<UUID> wishList) {
         this.id = id;
         this.fullName = fullName;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+        this.image = image;
+        this.wishList = wishList;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public ArrayList<UUID> getWishList() {
+        if (wishList == null) {
+            return new ArrayList();
+        }
+        return wishList;
+    }
+
+    public void setWishList(ArrayList<UUID> wishList) {
+        this.wishList = wishList;
     }
 
     public UUID getId() {

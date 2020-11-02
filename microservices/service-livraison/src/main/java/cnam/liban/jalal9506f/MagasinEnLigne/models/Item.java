@@ -14,17 +14,17 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @author jalal
  */
 public class Item {
-    
+
     @Id
     @Field("id")
     private UUID id;
-    
+
     @Field("orderId")
     private UUID orderId;
-    
+
     @Field("status")
     private int status; // 0 for pending delivery 1 for delivered item
-    
+
     @Field("deliveryCharges")
     private double deliveryCharges; // order cost+ delivery charges
 
@@ -32,7 +32,7 @@ public class Item {
         this.id = UUID.randomUUID();
         this.deliveryCharges = 3000;
     }
-    
+
     public Item(UUID id, UUID orderId, int status, double deliveryCharges) {
         this.id = id;
         this.orderId = orderId;
@@ -71,6 +71,5 @@ public class Item {
     public void setDeliveryCharges(double deliveryCharges) {
         this.deliveryCharges = deliveryCharges;
     }
-    
-    
+
 }

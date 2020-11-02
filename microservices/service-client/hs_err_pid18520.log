@@ -1,0 +1,205 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 199229440 bytes for Failed to commit area from 0x0000000742a00000 to 0x000000074e800000 of length 199229440.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (c:/jenkins/workspace/zulu13-build-win64/zulu-src/src/hotspot/os/windows/os_windows.cpp:3301), pid=18520, tid=20452
+#
+# JRE version:  
+(13.0.2+6) (build )
+# Java VM: OpenJDK 64-Bit Server VM (13.0.2+6-MTS, mixed mode, aot, sharing, tiered, compressed oops, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dclassworlds.conf=C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\..\bin\m2.conf -Dmaven.home=C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\.. -Dlibrary.jansi.path=C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\..\lib\jansi-native -Dmaven.multiModuleProjectDirectory=A:\git\microservices\service-client org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Users\ahmad\AppData\Roaming\NetBeans\12.0\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 install
+
+Host: Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, 8 cores, 11G,  Windows 10 , 64 bit Build 19041 (10.0.19041.546)
+Time: Sun Nov  1 05:27:21 2020 Middle East Standard Time elapsed time: 0 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001c07633d800):  JavaThread "Unknown thread" [_thread_in_vm, id=20452, stack(0x000000043e200000,0x000000043e300000)]
+
+Stack: [0x000000043e200000,0x000000043e300000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x62b56a]
+V  [jvm.dll+0x7d463a]
+V  [jvm.dll+0x7d5def]
+V  [jvm.dll+0x7d63f3]
+V  [jvm.dll+0x24d878]
+V  [jvm.dll+0x62887a]
+V  [jvm.dll+0x61d685]
+V  [jvm.dll+0x30cd1c]
+V  [jvm.dll+0x30cb52]
+V  [jvm.dll+0x3122c6]
+V  [jvm.dll+0x3564f6]
+V  [jvm.dll+0x355cd0]
+V  [jvm.dll+0x2e77aa]
+V  [jvm.dll+0x2e8a42]
+V  [jvm.dll+0x7b1278]
+V  [jvm.dll+0x363f39]
+V  [jvm.dll+0x794255]
+V  [jvm.dll+0x3ceb4f]
+V  [jvm.dll+0x3d0e91]
+C  [jli.dll+0x51ff]
+C  [ucrtbase.dll+0x214c2]
+C  [KERNEL32.DLL+0x17034]
+C  [ntdll.dll+0x4cec1]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ffae83016f8, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000001c076394800 GCTaskThread "GC Thread#0" [stack: 0x000000043e300000,0x000000043e400000] [id=19056]
+  0x000001c0763b1000 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000043e400000,0x000000043e500000] [id=18200]
+  0x000001c0763b2800 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000043e500000,0x000000043e600000] [id=1820]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffae7ab7527]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x000001c07633a310] Heap_lock - owner thread: 0x000001c07633d800
+
+Heap address: 0x0000000742a00000, size: 3030 MB, Compressed Oops mode: Non-zero based: 0x0000000742a00000
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (8 events):
+Event: 0.014 Loaded shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\zip.dll
+Event: 0.016 Loaded shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\jimage.dll
+Event: 0.025 Loading shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\lib\libjava.base-coop.dll failed, error code 126
+Event: 0.025 Loading shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\lib\libjava.logging-coop.dll failed, error code 126
+Event: 0.025 Loading shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\lib\libjdk.compiler-coop.dll failed, error code 126
+Event: 0.025 Loading shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\lib\libjdk.scripting.nashorn-coop.dll failed, error code 126
+Event: 0.025 Loading shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\lib\libjdk.internal.vm.ci-coop.dll failed, error code 126
+Event: 0.025 Loading shared library C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\lib\libjdk.internal.vm.compiler-coop.dll failed, error code 126
+
+
+Dynamic libraries:
+0x00007ff6be170000 - 0x00007ff6be17d000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\java.exe
+0x00007ffb35290000 - 0x00007ffb35486000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffb33ce0000 - 0x00007ffb33d9d000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffb32c20000 - 0x00007ffb32ee8000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffb32ef0000 - 0x00007ffb32ff0000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffb2ddd0000 - 0x00007ffb2dde5000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\VCRUNTIME140.dll
+0x00007ffaff310000 - 0x00007ffaff328000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\jli.dll
+0x00007ffb34750000 - 0x00007ffb348f0000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffb21070000 - 0x00007ffb2130b000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.488_none_ca04af081b815d21\COMCTL32.dll
+0x00007ffb331b0000 - 0x00007ffb331d2000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffb34e40000 - 0x00007ffb34ede000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffb33ae0000 - 0x00007ffb33b0a000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffb33040000 - 0x00007ffb33149000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffb33260000 - 0x00007ffb332fd000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffb344a0000 - 0x00007ffb344d0000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ffaf5d70000 - 0x00007ffaf5e0b000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\msvcp140.dll
+0x00007ffae77c0000 - 0x00007ffae83a8000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\server\jvm.dll
+0x00007ffb35010000 - 0x00007ffb350ba000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffb34600000 - 0x00007ffb3469b000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffb34ee0000 - 0x00007ffb35004000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffb34260000 - 0x00007ffb34268000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ffb23910000 - 0x00007ffb23937000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffb19940000 - 0x00007ffb19949000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffb30230000 - 0x00007ffb3023a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffb34280000 - 0x00007ffb342eb000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffb30850000 - 0x00007ffb30862000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ffb2ddc0000 - 0x00007ffb2ddd0000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\verify.dll
+0x00007ffb2cdf0000 - 0x00007ffb2cfd4000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ffb1bb60000 - 0x00007ffb1bb8c000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ffb331e0000 - 0x00007ffb3325f000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffaf8bf0000 - 0x00007ffaf8c16000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\java.dll
+0x00007ffafb560000 - 0x00007ffafb577000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\zip.dll
+0x00007ffb2ddb0000 - 0x00007ffb2ddba000 	C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\jimage.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.488_none_ca04af081b815d21;C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin\server
+
+VM Arguments:
+jvm_args: -Dclassworlds.conf=C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\..\bin\m2.conf -Dmaven.home=C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\.. -Dlibrary.jansi.path=C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\..\lib\jansi-native -Dmaven.multiModuleProjectDirectory=A:\git\microservices\service-client 
+java_command: org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Users\ahmad\AppData\Roaming\NetBeans\12.0\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 install
+java_class_path (initial): C:\Program Files\NetBeans-12.0\netbeans\java\maven\bin\..\boot\plexus-classworlds-2.6.0.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 1048576                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 199229440                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 3177185280                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 1048576                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 5839372                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122909434                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122909434                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 3177185280                             {manageable} {ergonomic}
+     bool UseCompressedClassPointers               = true                                 {lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                                 {lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64
+PATH=C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\nodejs\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files\Git\cmd;C:\Users\ahmad\AppData\Local\Microsoft\WindowsApps;C:\Users\ahmad\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\apache-maven-3.6.3\bin;C:\Program Files\gradle-6.5\bin;C:\Users\ahmad\AppData\Local\Android\Sdk;C:\Users\ahmad\AppData\Roaming\npm;C:\Program Files\zulu13.29.9-ca-jdk13.0.2-win_x64\bin;C:\Users\ahmad\AppData\Local\Android\Sdk\ndk\21.3.6528147;
+USERNAME=jalal
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 94 Stepping 3, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10 , 64 bit Build 19041 (10.0.19041.546)
+
+CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 94 stepping 3, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, rtm, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, fma
+
+Memory: 4k page, system-wide physical 12115M (262M free)
+TotalPageFile size 34819M (AvailPageFile size 169M)
+current process WorkingSet (physical memory assigned to process): 10M, peak: 10M
+current process commit charge ("private bytes"): 60M, peak: 250M
+
+vm_info: OpenJDK 64-Bit Server VM (13.0.2+6-MTS) for windows-amd64 JRE (13.0.2+6-MTS) (Zulu13.29+9-CA), built on Jan  8 2020 04:49:51 by "zulu_re" with MS VC++ 15.9 (VS2017)
+
+END.

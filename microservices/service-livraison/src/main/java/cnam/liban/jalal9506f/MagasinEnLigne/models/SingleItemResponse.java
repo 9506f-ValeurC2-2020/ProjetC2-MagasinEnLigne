@@ -17,10 +17,11 @@ import org.springframework.http.ResponseEntity;
  * @author jalal
  */
 public class SingleItemResponse extends ItemResponse {
+
     private Item response;
 
-    public SingleItemResponse(String status,String message,Item response) {
-        super(status,message);
+    public SingleItemResponse(String status, String message, Item response) {
+        super(status, message);
         this.response = response;
     }
 
@@ -32,7 +33,6 @@ public class SingleItemResponse extends ItemResponse {
         this.response = response;
     }
 
-    
     @Override
     public ResponseEntity<Object> toJson() {
         JSONObject jResponse = new JSONObject();

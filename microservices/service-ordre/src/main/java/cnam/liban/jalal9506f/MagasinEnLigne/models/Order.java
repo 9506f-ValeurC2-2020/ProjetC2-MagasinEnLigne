@@ -30,13 +30,12 @@ public class Order {
     private UUID fromClientId;
     @Field("toVendeur")
     private UUID toVendeurId;
-    
 
     public Order() {
         this.id = UUID.randomUUID();
     }
 
-    public Order(UUID id, String description, Long time,double cost, UUID fromClientId, UUID toVendeurId) {
+    public Order(UUID id, String description, Long time, double cost, UUID fromClientId, UUID toVendeurId) {
         this.id = id;
         this.description = description;
         this.time = time;
@@ -76,8 +75,6 @@ public class Order {
     public void setCost(double cost) {
         this.cost = cost;
     }
-    
-    
 
     public UUID getFromClientId() {
         return fromClientId;

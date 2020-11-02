@@ -28,16 +28,28 @@ public class Vendeur {
     private String phoneNumber;
     @Field("email")
     private String email;
+    @Field("image")
+    private byte[] image;
 
     public Vendeur() {
         this.id = UUID.randomUUID();
     }
 
-    public Vendeur(UUID id, String fullName, String password, String phoneNumber) {
+    public Vendeur(UUID id, String fullName, String password, String phoneNumber, String email, byte[] image) {
         this.id = id;
         this.fullName = fullName;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.image = image;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public UUID getId() {

@@ -17,12 +17,13 @@ import org.springframework.http.ResponseEntity;
  *
  * @author jalal
  */
-public class MultipleItemResponse extends ItemResponse{
+public class MultipleItemResponse extends ItemResponse {
+
     private List<Item> response;
-    
-    public MultipleItemResponse(String status,String message,List<Item> response){
-    super(status,message);
-    this.response = response;
+
+    public MultipleItemResponse(String status, String message, List<Item> response) {
+        super(status, message);
+        this.response = response;
     }
 
     public List<Item> getResponse() {
@@ -44,5 +45,5 @@ public class MultipleItemResponse extends ItemResponse{
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         return new ResponseEntity<>(jResponse, httpHeaders, HttpStatus.OK);
     }
-    
+
 }

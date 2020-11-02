@@ -5,6 +5,7 @@
 * [Idée et Avantages](#idée-et-avantages)
 * [Microservices](#microservices)
 * [Technologies](#technologies)
+* [Utilisation](#utilisation)
 
 ##### Problématique
 A cause de la propagation de virus corona (covid-19) et l'état économique mauvais, un grand nombre de personnes ont commencé à utiliser la plateforme WhatsApp afin de vendre des produits en ligne.
@@ -69,3 +70,9 @@ Les technologies utilisées sont :
 1)	SpringBoot pour les services
 2)	Android pour l’application mobile
 3)	Accès aux données par Restfull Api
+
+##### Utilisation
+###### Note importante: le projet est en local (localhost), pour le démarrer il faut bien savoir connecter le cellulaire à la mashine local (localhost)
+1) [entrer le mode developpeur](https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/#:~:text=To%20enable%20Developer%20Options%2C%20open,times%20to%20enable%20Developer%20Options.)
+2) ![connect_localhost](/images/connect_localhost.jpeg)
+3) installer [mongoDbCompass](https://www.mongodb.com/try/download/compass)

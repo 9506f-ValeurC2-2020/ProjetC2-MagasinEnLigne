@@ -8,7 +8,8 @@ data class Client(
     @SerializedName("password") val password: String = "",
     @SerializedName("phoneNumber") val phoneNumber: String = "",
     @SerializedName("email") val email: String? = "",
-    @SerializedName("address") val address: String = ""
+    @SerializedName("address") val address: String = "",
+    @SerializedName("image") val image: String? = null,
 )
 
 data class SingleClientResponse(

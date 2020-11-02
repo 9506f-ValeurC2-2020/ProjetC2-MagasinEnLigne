@@ -11,15 +11,19 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_my_products"
-        android:layout_width="0dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_products"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_products"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/tv_no_items"
@@ -33,13 +37,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/sale_popup"
+        layout="@layout/popup_sale"
+        android:visibility="gone" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/rv_my_products"
-        app:layout_constraintEnd_toEndOf="@id/rv_my_products"
+        app:layout_constraintBottom_toBottomOf="@id/srl_products"
+        app:layout_constraintEnd_toEndOf="@id/srl_products"
         app:srcCompat="@drawable/ic_add" />
 </androidx.constraintlayout.widget.ConstraintLayout>

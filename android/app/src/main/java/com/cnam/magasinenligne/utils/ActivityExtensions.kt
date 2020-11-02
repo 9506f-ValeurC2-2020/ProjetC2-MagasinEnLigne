@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.cnam.magasinenligne.R
+import com.cnam.magasinenligne.fragments.BaseFragment
 import com.cnam.magasinenligne.fragments.landing.AccountFragment
 import com.cnam.magasinenligne.fragments.landing.HomeFragment
 import com.cnam.magasinenligne.fragments.landing.ShopFragment
@@ -68,7 +69,7 @@ fun verifyPermissions(activity: Activity, request: Int, permissions: Array<Strin
     return granted
 }
 
-fun checkPermissions(activity: Activity, request: Int, permissions: Array<String>): Boolean {
+fun checkPermissions(activity: Activity, permissions: Array<String>): Boolean {
     var granted = true
     for (element in permissions) {
         val permission = ActivityCompat.checkSelfPermission(activity, element)
@@ -122,7 +123,7 @@ fun Activity.startCrop(sourceUri: Uri, destinationUri: Uri) {
     options.setHideBottomControls(true)
     options.withMaxResultSize(640, 640)
     UCrop.of(sourceUri, destinationUri)
-        .withAspectRatio(1f, 1f)
+        .withAspectRatio(2f, 1.5f)
         .withOptions(options)
         .start(this)
 }
@@ -138,3 +139,9 @@ fun FragmentManager.getActiveFragmentTag(): String {
         }
     } else ""
 }
+
+fun BaseFragment.isActiveIn(activity: Activity): Boolean {
+    val fragment = activity.fragmentManager.findFragmentById(R.id.fl_container) ?: return false
+    return this.javaClass.simpleName == fragment.javaClass.simpleName
+}
+

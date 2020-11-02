@@ -1,9 +1,13 @@
 package com.cnam.magasinenligne.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.util.Base64
 import android.util.Log
 import com.cnam.magasinenligne.MyApplication
 import com.cnam.magasinenligne.models.DeviceTimezone
@@ -12,7 +16,9 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
@@ -195,7 +201,7 @@ fun getTimezone(): DeviceTimezone {
 }
 
 
-fun setImageFile(imageUri: Uri, name: String = "profile_image_file"): MultipartBody.Part? {
+fun setImageFile(imageUri: Uri, name: String = "image"): MultipartBody.Part? {
     var juri: URI? = null
     try {
         juri = URI(imageUri.toString())
@@ -218,3 +224,45 @@ fun createTextRequestBody(text: String): RequestBody {
     return RequestBody.create(MediaType.parse("text/plain"), text)
 }
 
+fun getBitmap(context: Context, imageUri: Uri): Bitmap? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+        ImageDecoder.decodeBitmap(
+            ImageDecoder.createSource(
+                context.contentResolver,
+                imageUri
+            )
+        )
+
+    } else {
+        context
+            .contentResolver
+            .openInputStream(imageUri)
+            .use { inputStream ->
+                BitmapFactory.decodeStream(inputStream)
+            }
+
+    }
+}
+
+fun convertBitmapToFile(destinationFile: File, bitmap: Bitmap) {
+    //create a file to write bitmap data
+    destinationFile.createNewFile()
+    //Convert bitmap to byte array
+    val bos = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos)
+    val bitmapData = bos.toByteArray()
+    //write the bytes in file
+    val fos = FileOutputStream(destinationFile)
+    fos.write(bitmapData)
+    fos.flush()
+    fos.close()
+}
+
+fun createBitmap(imageString: String): Bitmap {
+    val byteArray: ByteArray =
+        Base64.decode(imageString, Base64.DEFAULT)
+    return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+}
+
+fun String.toIntSex(): Int = if (this == "female") 1 else 0

@@ -98,7 +98,7 @@ class AllClientsFragment : BaseFragment(), RetrofitResponseListener,
         }
         myActivity.lockView(false)
         myActivity.stopLoading()
-        srl_clients.isRefreshing = false
+        srl_clients?.isRefreshing = false
         if (result is List<*>) {
             val list = result as List<Client>
             if (!list.isNullOrEmpty()) {
@@ -121,10 +121,10 @@ class AllClientsFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     override fun onFailure(error: String) {
-        srl_clients.isRefreshing = false
         myActivity.stopLoading()
         myActivity.lockView(false)
-        rv_clients.showSnack(error)
+        srl_clients?.isRefreshing = false
+        rv_clients?.showSnack(error)
         if (this::clientsAdapter.isInitialized && currentPage != PAGE_START) {
             clientsAdapter.removeLoading()
             isLoading = false

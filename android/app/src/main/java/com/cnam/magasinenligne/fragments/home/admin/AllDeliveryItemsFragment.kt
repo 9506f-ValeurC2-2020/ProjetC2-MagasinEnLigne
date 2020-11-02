@@ -115,7 +115,7 @@ class AllDeliveryItemsFragment : BaseFragment(), RetrofitResponseListener,
         }
         myActivity.lockView(false)
         myActivity.stopLoading()
-        srl_items.isRefreshing = false
+        srl_items?.isRefreshing = false
         if (result is List<*>) {
             val list = result as List<Item>
             if (!list.isNullOrEmpty()) {
@@ -138,10 +138,10 @@ class AllDeliveryItemsFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     override fun onFailure(error: String) {
-        srl_items.isRefreshing = false
         myActivity.stopLoading()
         myActivity.lockView(false)
-        rv_delivery_items.showSnack(error)
+        srl_items?.isRefreshing = false
+        rv_delivery_items?.showSnack(error)
         if (this::itemsAdapter.isInitialized && currentPage != PAGE_START) {
             itemsAdapter.removeLoading()
             isLoading = false

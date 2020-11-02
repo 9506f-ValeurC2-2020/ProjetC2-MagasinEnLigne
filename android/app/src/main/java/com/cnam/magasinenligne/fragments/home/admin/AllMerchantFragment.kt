@@ -115,7 +115,7 @@ class AllMerchantFragment : BaseFragment(), RetrofitResponseListener,
         }
         myActivity.lockView(false)
         myActivity.stopLoading()
-        srl_merchants.isRefreshing = false
+        srl_merchants?.isRefreshing = false
         if (result is List<*>) {
             val list = result as List<Vendeur>
             if (!list.isNullOrEmpty()) {
@@ -138,10 +138,10 @@ class AllMerchantFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     override fun onFailure(error: String) {
-        srl_merchants.isRefreshing = false
         myActivity.stopLoading()
         myActivity.lockView(false)
-        rv_merchants.showSnack(error)
+        srl_merchants?.isRefreshing = false
+        rv_merchants?.showSnack(error)
         if (this::merchantAdapter.isInitialized && currentPage != PAGE_START) {
             merchantAdapter.removeLoading()
             isLoading = false

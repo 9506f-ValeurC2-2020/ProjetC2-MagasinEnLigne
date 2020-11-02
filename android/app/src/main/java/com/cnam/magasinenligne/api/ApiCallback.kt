@@ -31,7 +31,8 @@ class ApiCallback<T : CommonResponse>(
             if (response.code() == 200) {
                 logDebug("200")
                 when (from_flag) {
-                    "from_client_register", "from_client_login", "from_client_check_in", "from_client_update", "from_client_delete" -> {
+                    "from_client_register", "from_client_login", "from_client_check_in", "from_client_update", "from_client_delete",
+                    "from_add_to_wish", "from_remove_wish", "from_client_by_id", "from_send_broadcast" -> {
                         val clientResponse = body as SingleClientResponse
                         result = if (body.status == SUCCESS) {
                             clientResponse.client

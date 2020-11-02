@@ -90,7 +90,7 @@ class AllOrdersFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     private fun initializeRecyclerView() {
-        ordersAdapter = OrdersAdapter(orders)
+        ordersAdapter = OrdersAdapter(orders, true)
         rv_orders.adapter = ordersAdapter
         val mLayoutManager = LinearLayoutManager(myActivity)
         rv_orders.layoutManager = mLayoutManager
@@ -115,7 +115,7 @@ class AllOrdersFragment : BaseFragment(), RetrofitResponseListener,
         }
         myActivity.lockView(false)
         myActivity.stopLoading()
-        srl_orders.isRefreshing = false
+        srl_orders?.isRefreshing = false
         if (result is List<*>) {
             val list = result as List<Order>
             if (!list.isNullOrEmpty()) {
@@ -138,10 +138,10 @@ class AllOrdersFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     override fun onFailure(error: String) {
-        srl_orders.isRefreshing = false
         myActivity.stopLoading()
         myActivity.lockView(false)
-        rv_orders.showSnack(error)
+        srl_orders?.isRefreshing = false
+        rv_orders?.showSnack(error)
         if (this::ordersAdapter.isInitialized && currentPage != PAGE_START) {
             ordersAdapter.removeLoading()
             isLoading = false

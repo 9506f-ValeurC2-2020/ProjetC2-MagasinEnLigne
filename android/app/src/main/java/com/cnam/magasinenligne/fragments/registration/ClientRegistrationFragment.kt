@@ -193,9 +193,8 @@ class ClientRegistrationFragment : BaseFragment(), RetrofitResponseListener {
         cl_address.setOnClickListener {
             logDebug("clicking address")
             if (!mapClicked) {
-                val granted = checkPermissions(activity!!, locationRequest, locationPermission)
+                val granted = checkPermissions(activity!!, locationPermission)
                 if (granted) {
-
                     handlePermissionResult(1)
                 } else {
                     myActivity.createDialog(

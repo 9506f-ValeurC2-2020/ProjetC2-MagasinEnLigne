@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.RadioButton
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 
@@ -163,4 +164,6 @@ fun View.enableView() {
     alpha = 1f
     isEnabled = true
 }
+
+fun RadioButton.checked(): Boolean = this.isChecked
 

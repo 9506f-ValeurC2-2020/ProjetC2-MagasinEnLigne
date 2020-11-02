@@ -35,6 +35,29 @@ interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/checkIn")
     fun checkInClient(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleClientResponse>
+
+    @FormUrlEncoded
+    @POST("/addToWish")
+    fun addToWish(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleClientResponse>
+
+    @FormUrlEncoded
+    @POST("/removeWish")
+    fun removeWish(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleClientResponse>
+
+    @FormUrlEncoded
+    @POST("/findClientById")
+    fun findClientById(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleClientResponse>
+
+    @FormUrlEncoded
+    @POST("/sendBroadcast")
+    fun sendBroadcast(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleClientResponse>
+
+    @Multipart
+    @POST("/updatePhoto")
+    fun updateClientPhoto(
+        @PartMap fields: HashMap<String, RequestBody>,
+        @Part media: MultipartBody.Part?
+    ): Call<SingleClientResponse>
     //</editor-fold>
 
 
@@ -66,6 +89,13 @@ interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/checkIn")
     fun checkInVendeur(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleVendeurResponse>
+
+    @Multipart
+    @POST("/updatePhoto")
+    fun updateMerchantPhoto(
+        @PartMap fields: HashMap<String, RequestBody>,
+        @Part media: MultipartBody.Part?
+    ): Call<SingleVendeurResponse>
     //</editor-fold>
 
     //<editor-fold desc="order">
@@ -88,12 +118,28 @@ interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/update")
     fun updateOrder(@FieldMap(encoded = true) map: HashMap<String, String>): Call<SingleOrderResponse>
+
+    @FormUrlEncoded
+    @POST("/getClientOrders")
+    fun getClientOrders(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleOrderResponse>
+
+    @FormUrlEncoded
+    @POST("/getMerchantOrders")
+    fun getMerchantOrders(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleOrderResponse>
     //</editor-fold>
 
     //<editor-fold desc="product">
     @FormUrlEncoded
     @POST("/getProducts")
     fun getProducts(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleProductResponse>
+
+    @FormUrlEncoded
+    @POST("/getMerchantProducts")
+    fun getMerchantProducts(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleProductResponse>
+
+    @FormUrlEncoded
+    @POST("/getWishes")
+    fun getWishes(@FieldMap(encoded = true) map: HashMap<String, String>): Call<MultipleProductResponse>
 
     @Multipart
     @POST("/save")

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:layout_margin="8dp"
     app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="12dp"
     app:cardElevation="3dp">
@@ -23,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bt_put_on_sale"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline_start"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +47,10 @@
             app:layout_constraintTop_toBottomOf="@id/iv_image" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bt_put_on_sale"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toTopOf="parent">
@@ -57,13 +59,15 @@
                 android:id="@+id/group_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:constraint_referenced_ids="tv_sex,tv_age_category" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_sales"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="tv_on_sale,tv_sale_price" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_on_sale,tv_sale_price,iv_on_sale" />
 
             <TextView
                 android:id="@+id/tv_id"
@@ -192,7 +196,32 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_on_sale" />
+
+            <ImageView
+                android:id="@+id/iv_on_sale"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.12"
+                app:srcCompat="@drawable/ic_tag" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <Button
+            android:id="@+id/bt_put_on_sale"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_bottom_rounded_primary"
+            android:gravity="center"
+            android:text="@string/put_on_sale"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.cnam.magasinenligne.fragments.landing
+package com.cnam.magasinenligne.fragments.home.merchant
 
 import android.Manifest
 import android.app.Activity
@@ -12,43 +12,35 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import com.cnam.magasinenligne.MyApplication
 import com.cnam.magasinenligne.R
 import com.cnam.magasinenligne.activities.LandingActivity
-import com.cnam.magasinenligne.activities.RegistrationActivity
-import com.cnam.magasinenligne.api.ApiCallback
-import com.cnam.magasinenligne.api.AppRetrofitClient
-import com.cnam.magasinenligne.api.ID
-import com.cnam.magasinenligne.api.RetrofitResponseListener
-import com.cnam.magasinenligne.api.models.Client
-import com.cnam.magasinenligne.api.models.SingleClientResponse
-import com.cnam.magasinenligne.api.models.SingleVendeurResponse
-import com.cnam.magasinenligne.api.models.Vendeur
+import com.cnam.magasinenligne.api.*
+import com.cnam.magasinenligne.api.models.SingleProductResponse
 import com.cnam.magasinenligne.fragments.BaseFragment
-import com.cnam.magasinenligne.fragments.profile.ChangeEmailFragment
-import com.cnam.magasinenligne.fragments.profile.ChangePasswordFragment
-import com.cnam.magasinenligne.fragments.profile.ChangePhoneFragment
-import com.cnam.magasinenligne.isUserLoggedIn
 import com.cnam.magasinenligne.utils.*
 import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.fragment_account.*
+import kotlinx.android.synthetic.main.fragment_add_product.*
 import java.io.File
 
-class AccountFragment : BaseFragment(), RetrofitResponseListener {
+class AddProductFragment : BaseFragment(), RetrofitResponseListener {
     private lateinit var myActivity: LandingActivity
-    private var changePasswordClicked = false
-    private var changePhoneClicked = false
-    private var changeEmailClicked = false
     private var camClicked = false
+    private var addClicked = false
+    private var hasChanged = false
     var capturedImageUri: Uri? = null
     private val camRequest = 7000
     private val camPermissions = arrayOf(Manifest.permission.CAMERA)
     private val selectPictureRequest = 3000
     private val cameraCaptureRequest = 4000
+    private var selectedCategory = "clothing"
+    private var selectedAgeCategory = "0-3"
 
     /**
      * OnBackPressedCallback
@@ -56,7 +48,7 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                myActivity.finish()
+                activity!!.supportFragmentManager.popBackStack()
             }
         }
 
@@ -66,94 +58,58 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
         savedInstanceState: Bundle?
     ): View? {
         myActivity = activity!! as LandingActivity
-        return inflater.inflate(R.layout.fragment_account, null)
+        return inflater.inflate(R.layout.fragment_add_product, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addOnBackPressedCallback(onBackPressedCallback)
-        loadView()
         initListeners()
-        myActivity.addOnBackStackListener(this)
-    }
-
-    private fun isPicExist(): Boolean {
-        return if (MyApplication.isClient()) {
-            !MyApplication.clientProfile.image.isNullOrEmpty()
-        } else {
-            !MyApplication.merchantProfile.image.isNullOrEmpty()
-        }
-    }
-
-
-    override fun addOnBackPressedCallback(onBackPressedCallback: OnBackPressedCallback?) {
-        if (activity == null) return
-        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback!!)
-    }
-
-    override fun onBackStackChanged() {
-        logDebug("onBackStackChanged ${myActivity.supportFragmentManager.backStackEntryCount}")
-        if (!myActivity.accountPaused) {
-            val fragment = myActivity.supportFragmentManager.findFragmentById(R.id.fl_container)
-            if (fragment != null && fragment is AccountFragment)
-                resetClicks()
-        }
-    }
-
-    private fun loadView() {
-        if (MyApplication.isClient()) {
-            if (!MyApplication.clientProfile.image.isNullOrEmpty())
-                iv_profile_pic.setImageBitmap(createBitmap(MyApplication.clientProfile.image!!))
-            tv_name.text = MyApplication.clientProfile.fullName
-        } else {
-            if (!MyApplication.merchantProfile.image.isNullOrEmpty())
-                iv_profile_pic.setImageBitmap(createBitmap(MyApplication.merchantProfile.image!!))
-            tv_name.text = MyApplication.merchantProfile.fullName
-        }
     }
 
     private fun initListeners() {
-        tv_edit_password.setOnClickListener {
-            if (!changePasswordClicked) {
-                myActivity.accountPaused = true
-                changePasswordClicked = true
-                myActivity.supportFragmentManager.addTransaction(
-                    ChangePasswordFragment(),
-                    ChangePasswordFragment::class.java.simpleName,
-                    R.anim.enter_from_right,
-                    R.anim.exit_to_right
-                )
+        /**
+         * radio change listeners
+         */
+        rb_clothing.setOnClickListener {
+            selectedCategory = "clothing"
+            adjustSelection(1, shouldShow = true)
+        }
+        rb_makeup.setOnClickListener {
+            selectedCategory = "makeup"
+            adjustSelection(1)
+        }
+        rb_electronics.setOnClickListener {
+            selectedCategory = "electronics"
+            adjustSelection(2)
+        }
+        rb_appliances.setOnClickListener {
+            selectedCategory = "home appliances"
+            adjustSelection(2)
+        }
+        cb_on_sale.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                et_sale_price.show()
+            } else {
+                et_sale_price.setText("")
+                et_sale_price.hide()
             }
         }
-        tv_edit_phone.setOnClickListener {
-            if (!changePhoneClicked) {
-                myActivity.accountPaused = true
-                changePhoneClicked = true
-                myActivity.supportFragmentManager.addTransaction(
-                    ChangePhoneFragment(),
-                    ChangePhoneFragment::class.java.simpleName,
-                    R.anim.enter_from_right,
-                    R.anim.exit_to_right
-                )
-            }
+        val listener1 = View.OnClickListener { adjustSelection(3) }
+        val listener2 = View.OnClickListener { adjustSelection(4) }
+        for (rb in rg_ages_1.children) {
+            selectedAgeCategory = (rb as RadioButton).text.toString()
+            rb.setOnClickListener(listener1)
         }
-        tv_edit_email.setOnClickListener {
-            if (!changeEmailClicked) {
-                myActivity.accountPaused = true
-                changeEmailClicked = true
-                myActivity.supportFragmentManager.addTransaction(
-                    ChangeEmailFragment(),
-                    ChangeEmailFragment::class.java.simpleName,
-                    R.anim.enter_from_right,
-                    R.anim.exit_to_right
-                )
-            }
+        for (rb in rg_ages_2.children) {
+            selectedAgeCategory = (rb as RadioButton).text.toString()
+            rb.setOnClickListener(listener2)
         }
-        tv_logout.setOnClickListener {
-            putPreference(isUserLoggedIn, false)
-            startActivity(Intent(myActivity, RegistrationActivity::class.java))
-        }
-        iv_profile_pic.setOnClickListener {
+
+        /**
+         * click listeners
+         */
+        iv_product.setOnClickListener {
             if (!camClicked) {
                 camClicked = true
                 val options1 = arrayOf(
@@ -161,7 +117,7 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
                     getString(R.string.remove)
                 )
 
-                if (!isPicExist()) {
+                if (!hasChanged) {
                     showOptions()
                 } else {
                     val builder = AlertDialog.Builder(myActivity)
@@ -176,7 +132,7 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
                                     showOptions()
                                 }
                                 getString(R.string.remove) -> {
-                                    updatePhoto(null)
+                                    removePic()
                                 }
                             }
                         }
@@ -191,33 +147,85 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
                 }
             }
         }
+        bt_add.setOnClickListener {
+            if (!addClicked) {
+                addClicked = true
+                val name = et_name.text.toString()
+                val price = et_price.text.toString()
+                val isOnSale = cb_on_sale.isChecked
+                val salePrice = if (isOnSale) et_sale_price.text.toString() else "0"
+                if (name.isEmpty()) {
+                    showError(getString(R.string.name_required_error))
+                    return@setOnClickListener
+                }
+                if (price.isEmpty()) {
+                    showError(getString(R.string.price_required_error))
+                    return@setOnClickListener
+                }
+                if (price.toInt() == 0) {
+                    showError(getString(R.string.null_price_error))
+                    return@setOnClickListener
+                }
+                if (isOnSale) {
+                    if (salePrice.isEmpty()) {
+                        showError(getString(R.string.sale_price_required_error))
+                        return@setOnClickListener
+                    }
+                    if (salePrice.toInt() == 0) {
+                        showError(getString(R.string.null_price_error))
+                        return@setOnClickListener
+                    }
+                    if (salePrice.toInt() > price.toInt()) {
+                        showError(getString(R.string.sale_price_bigger_than_initial_error))
+                        return@setOnClickListener
+                    }
+                }
+                myActivity.lockView(true)
+                myActivity.startLoading()
+                val part = if (capturedImageUri != null) setImageFile(capturedImageUri!!) else null
+                val fields = hashMapOf(
+                    NAME to createTextRequestBody(name),
+                    CATEGORY to createTextRequestBody(selectedCategory),
+                    PRICE to createTextRequestBody(price),
+                    PROVIDED_BY to createTextRequestBody(MyApplication.merchantProfile.id)
+                )
+                if (selectedCategory == "clothing") {
+                    val sex = if (rb_female.isChecked) 1 else 0
+                    fields[SEX] = createTextRequestBody("$sex")
+                    fields[AGE_CATEGORY] = createTextRequestBody(selectedAgeCategory)
+                }
+                if (isOnSale) {
+                    fields[ON_SALE] = createTextRequestBody("$isOnSale")
+                    fields[SALE_PRICE] = createTextRequestBody(salePrice)
+                }
+                val apiCallback = ApiCallback<SingleProductResponse>("from_product_save", this)
+                AppRetrofitClient.buildService(3).saveProduct(fields, part).enqueue(apiCallback)
+                logDebug(fields.toString())
+
+            }
+        }
     }
 
+    private fun showError(message: String) {
+        myActivity.createDialog(getString(R.string.error), message)
+            .setCancelable(true)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setOnDismissListener { addClicked = false }
+            .show()
+    }
+
+    private fun removePic() {
+        iv_product.setImageResource(R.drawable.ic_camera)
+        capturedImageUri = null
+        hasChanged = false
+    }
 
     private fun updatePhoto(uri: Uri?) {
-        myActivity.startLoading()
-        myActivity.lockView(true)
-        logDebug("URI $uri")
-        if (uri == null) {
-            iv_profile_pic.setImageResource(R.drawable.iv_contact)
-        } else {
-            Picasso.get().load(uri).into(iv_profile_pic)
-        }
-        val part = if (uri != null) setImageFile(uri) else null
-        if (MyApplication.isClient()) {
-            logDebug("PART is " + part.toString())
-            val fields = hashMapOf(
-                ID to createTextRequestBody(MyApplication.clientProfile.id)
-            )
-            val apiCallback = ApiCallback<SingleClientResponse>("from_client_update", this)
-            AppRetrofitClient.buildService(1).updateClientPhoto(fields, part).enqueue(apiCallback)
-        } else {
-            val fields = hashMapOf(
-                ID to createTextRequestBody(MyApplication.merchantProfile.id)
-            )
-            val apiCallback = ApiCallback<SingleVendeurResponse>("from_merchant_update", this)
-            AppRetrofitClient.buildService(2).updateMerchantPhoto(fields, part).enqueue(apiCallback)
-        }
+        Picasso.get().load(uri).into(iv_product)
+        capturedImageUri = uri
+        hasChanged = true
     }
 
     private fun captureImage() {
@@ -233,6 +241,23 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
         val res = ((if (dir == null) "" else dir.absolutePath + "/")
                 + "image" + time + ".jpg")
         return if (res != "") File(res) else null
+    }
+
+
+    private fun adjustSelection(groupId: Int, shouldShow: Boolean = false) {
+        when (groupId) {
+            1 -> {
+                if (shouldShow) group_clothing.show() else group_clothing.hide()
+                rg_categories_2.clearCheck()
+            }
+            2 -> {
+                rg_categories_1.clearCheck()
+                group_clothing.hide()
+            }
+            3 -> rg_ages_2.clearCheck()
+            else -> rg_ages_1.clearCheck()
+        }
+
     }
 
     private fun showOptions() {
@@ -383,37 +408,49 @@ class AccountFragment : BaseFragment(), RetrofitResponseListener {
             }
 
         }
+
         resetClicks()
         logDebug("Result is $resultCode  from $requestCode")
     }
 
+    override fun onBackStackChanged() {
+        logDebug("onBackStackChanged")
+    }
+
+
+    override fun addOnBackPressedCallback(onBackPressedCallback: OnBackPressedCallback?) {
+        if (activity == null) return
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback!!)
+    }
+
     private fun resetClicks() {
         camClicked = false
-        changePasswordClicked = false
-        changePhoneClicked = false
-        changeEmailClicked = false
-        myActivity.showNavigation()
     }
 
     override fun onSuccess(result: Any, from: String) {
-        myActivity.lockView(false)
         myActivity.stopLoading()
-        resetClicks()
-        when (from) {
-            "from_client_update" -> {
-                MyApplication.clientProfile = result as Client
-            }
-            "from_merchant_update" -> {
-                MyApplication.merchantProfile = result as Vendeur
-            }
-        }
-        tv_logout.showSnack(getString(R.string.picture_updated))
+        myActivity.lockView(false)
+        bt_add.showSnack("Product added successfully")
+        clearViewsData()
     }
 
     override fun onFailure(error: String) {
-        resetClicks()
-        myActivity.lockView(false)
         myActivity.stopLoading()
-        tv_logout.showSnack(error)
+        myActivity.lockView(false)
+        bt_add.showSnack(error)
     }
+
+    private fun clearViewsData() {
+        et_name.setText("")
+        et_sale_price.setText("")
+        et_price.setText("")
+        cb_on_sale.isChecked = false
+        rb_0_3.performClick()
+        rb_female.performClick()
+        rb_clothing.performClick()
+        addClicked = false
+        capturedImageUri = null
+        removePic()
+    }
+
 }

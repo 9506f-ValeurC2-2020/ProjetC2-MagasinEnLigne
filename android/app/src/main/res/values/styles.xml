@@ -21,6 +21,12 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
+    <style name="MyRadioButton" parent="BottomNavigationTextAppearance">
+        <item name="buttonTint">@color/tint_selector</item>
+        <item name="android:textColor">@color/tint_selector</item>
+
+    </style>
+
     <style name="SpinnerTheme">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:gravity">center</item>

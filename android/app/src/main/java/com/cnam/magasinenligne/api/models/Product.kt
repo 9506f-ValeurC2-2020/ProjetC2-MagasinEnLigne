@@ -11,7 +11,8 @@ data class Product(
     @SerializedName("onSale") val onSale: Boolean = false,
     @SerializedName("salePrice") val salePrice: Double = 0.0,
     @SerializedName("ageCategory") val ageCategory: String = "",
-    @SerializedName("image") val image: String? = null
+    @SerializedName("image") val image: String? = null,
+    @SerializedName("providedBy") val providedBy: String = "",
 )
 
 data class SingleProductResponse(

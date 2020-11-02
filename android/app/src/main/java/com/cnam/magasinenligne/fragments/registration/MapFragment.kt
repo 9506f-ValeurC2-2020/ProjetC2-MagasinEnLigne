@@ -187,7 +187,7 @@ class MapFragment : BaseFragment() {
     }
 
     override fun onBackStackChanged() {
-        TODO("Not yet implemented")
+        logDebug("onBack")
     }
 
     private fun getMyLocation() {

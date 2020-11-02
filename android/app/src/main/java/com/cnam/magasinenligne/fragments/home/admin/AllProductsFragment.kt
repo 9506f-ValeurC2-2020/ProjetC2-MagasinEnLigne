@@ -90,7 +90,7 @@ class AllProductsFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     private fun initializeRecyclerView() {
-        productAdapter = ProductAdapter(products)
+        productAdapter = ProductAdapter(products, 2)
         rv_products.adapter = productAdapter
         val mLayoutManager = LinearLayoutManager(myActivity)
         rv_products.layoutManager = mLayoutManager
@@ -115,7 +115,7 @@ class AllProductsFragment : BaseFragment(), RetrofitResponseListener,
         }
         myActivity.lockView(false)
         myActivity.stopLoading()
-        srl_products.isRefreshing = false
+        srl_products?.isRefreshing = false
         if (result is List<*>) {
             val list = result as List<Product>
             if (!list.isNullOrEmpty()) {
@@ -138,10 +138,10 @@ class AllProductsFragment : BaseFragment(), RetrofitResponseListener,
     }
 
     override fun onFailure(error: String) {
-        srl_products.isRefreshing = false
         myActivity.stopLoading()
         myActivity.lockView(false)
-        rv_products.showSnack(error)
+        srl_products?.isRefreshing = false
+        rv_products?.showSnack(error)
         if (this::productAdapter.isInitialized && currentPage != PAGE_START) {
             productAdapter.removeLoading()
             isLoading = false

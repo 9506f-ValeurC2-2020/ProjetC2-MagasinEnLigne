@@ -74,5 +74,6 @@ Les technologies utilisées sont :
 ##### Utilisation
 ###### Note importante: le projet est en local (localhost), pour le démarrer il faut bien savoir connecter le cellulaire à la mashine local (localhost)
 1) [entrer le mode developpeur](https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/#:~:text=To%20enable%20Developer%20Options%2C%20open,times%20to%20enable%20Developer%20Options.)
-2) ![connect_localhost](/images/connect_localhost.jpeg)
+2) ouvrir [chrome inspect](chrome://inspect) puis suivre les étapes illustrées dans l'image ci-dessous
+![connect_localhost](/images/connect_localhost.jpg)
 3) installer [mongoDbCompass](https://www.mongodb.com/try/download/compass)

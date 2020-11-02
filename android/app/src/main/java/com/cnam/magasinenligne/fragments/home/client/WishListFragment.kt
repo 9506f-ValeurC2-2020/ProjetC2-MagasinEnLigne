@@ -74,7 +74,8 @@ class WishListFragment : BaseFragment(), RetrofitResponseListener,
 
     private fun getAllProducts(index: Int) {
         val fields = hashMapOf(
-            PAGE_INDEX to "$index"
+            PAGE_INDEX to "$index",
+            WISHES to MyApplication.clientProfile.wishList.toString()
         )
         myActivity.startLoading()
         myActivity.lockView(true)
@@ -83,7 +84,7 @@ class WishListFragment : BaseFragment(), RetrofitResponseListener,
                 from_flag = "from_products_get",
                 listener = this
             )
-        AppRetrofitClient.buildService(3).getProducts(fields).enqueue(getProductsCallback)
+        AppRetrofitClient.buildService(3).getWishes(fields).enqueue(getProductsCallback)
         if (this::productAdapter.isInitialized && currentPage != PaginationListener.PAGE_START) {
             productAdapter.addLoading()
             isLoading = true

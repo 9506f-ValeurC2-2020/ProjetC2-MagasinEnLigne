@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/already_have_an_account"
-            android:textColor="@color/colorAccent"
+            style="@style/MyRadioButton"
             app:layout_constraintBottom_toBottomOf="@id/guideline_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
